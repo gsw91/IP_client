@@ -1,0 +1,5 @@
+.gradle/
+.idea/
+target/
+tasks
+test_stats
