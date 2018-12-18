@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CalculationMap {
+public final class CalculationMap {
 
     private static Logger LOGGER = Logger.getLogger(CalculationMap.class);
     private static Map<Long, InstrumentCalculation> data = new HashMap<>();

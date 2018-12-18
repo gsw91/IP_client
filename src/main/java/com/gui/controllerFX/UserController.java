@@ -25,9 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import org.apache.log4j.Logger;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
@@ -137,6 +135,7 @@ public class UserController implements Initializable {
 
     public void confirmTransactionAction() {
         if(labelAction.getText().equals("Buy instrument")) {
+            Long startTime = System.currentTimeMillis();
             InstrumentDto instrumentDto = null;
             String shareIndex = instrumentAction.getText();
             try {
@@ -152,8 +151,10 @@ public class UserController implements Initializable {
             if(QuotationsMap.getData().containsKey(shareIndex) && instrumentDto!=null) {
                 ShareOperation shareOperation = new ShareOperation();
                 shareOperation.buyShare(instrumentDto);
-                rebuildUserTable();
+                refreshUserPanel();
             }
+            Long end = System.currentTimeMillis();
+            System.out.println(end-startTime + " milis");
         }
     }
 
@@ -279,6 +280,7 @@ public class UserController implements Initializable {
             try {
                 threadConfig.interruptThreadUpdate();
                 User.logOutOfUser();
+                RecordList.clearList();
                 FirstScene firstScene = new FirstScene();
                 firstScene.createFirstWindow(GuiStage.GUI_STAGE);
             } catch (IOException ioe) {
@@ -304,6 +306,7 @@ public class UserController implements Initializable {
     public void showStats() {}
 
     public void refreshUserPanel() {
+        getUserInstruments();
         CalculationMap.refreshUserInstrumentPrice();
         CalculationMap.calculateShareRatios();
         rebuildUserTable();

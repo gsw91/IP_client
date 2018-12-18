@@ -23,8 +23,12 @@ public final class RecordList {
 
     protected static void reloadList(Map<Long, InstrumentCalculation> calculationMap) {
         InstrumentMapper mapper = new InstrumentMapper();
-        recordList.clear();
+        clearList();
         recordList.addAll(mapper.mapToRecordList(calculationMap));
+    }
+
+    public static void clearList() {
+        recordList.clear();
     }
 
 }
