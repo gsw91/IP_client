@@ -74,4 +74,7 @@ public final class Editor {
         return amount.replace(".", ",");
     }
 
+    public String replaceComma(String price) {
+        return price.replace(",", ".");
+    }
 }

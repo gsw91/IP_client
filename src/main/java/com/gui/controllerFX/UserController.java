@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 
 import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
@@ -136,17 +137,23 @@ public class UserController implements Initializable {
 
     public void confirmTransactionAction() {
         if(labelAction.getText().equals("Buy instrument")) {
-            InstrumentDto instrumentDto = new InstrumentDto(
-                    Long.valueOf(User.getUserInstance().getId()),
-                    Long.valueOf(quantityAction.getText()),
-                    instrumentAction.getText(),
-                    Double.valueOf(priceAction.getText()),
-                    String.valueOf(LocalDate.now()));
-
-            System.out.println(instrumentDto);
-            //  ShareOperation shareOperation = new ShareOperation();
-            //  shareOperation.buyShare();
-            //  refreshUserPanel();
+            InstrumentDto instrumentDto = null;
+            String shareIndex = instrumentAction.getText();
+            try {
+                Editor editor = new Editor();
+                Long userId = Long.valueOf(User.getUserInstance().getId());
+                Long quantity = Long.valueOf(quantityAction.getText());
+                double price = Double.valueOf(editor.replaceComma(priceAction.getText()));
+                String currentDate = String.valueOf(LocalDate.now());
+                instrumentDto = new InstrumentDto(userId, quantity, shareIndex, price, currentDate);
+            } catch (NumberFormatException nfe) {
+                System.out.println(nfe);
+            }
+            if(QuotationsMap.getData().containsKey(shareIndex) && instrumentDto!=null) {
+                ShareOperation shareOperation = new ShareOperation();
+                shareOperation.buyShare(instrumentDto);
+                rebuildUserTable();
+            }
         }
     }
 

@@ -50,5 +50,17 @@ public final class InstrumentDto {
         return buyingDate;
     }
 
+    @Override
+    public String toString() {
+        return "InstrumentDto{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", quantity=" + quantity +
+                ", sharesIndex='" + sharesIndex + '\'' +
+                ", buyingPrice=" + buyingPrice +
+                ", buyingDate='" + buyingDate + '\'' +
+                '}';
+    }
+
 }
 
