@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -90,7 +89,7 @@
             <Button fx:id="cancelAction" mnemonicParsing="false" onAction="#cancelTransactionAction" prefHeight="25.0" prefWidth="72.0" text="Cancel" />
          </children>
       </VBox>
-      <HBox alignment="CENTER_RIGHT" layoutX="126.0" layoutY="497.0" prefHeight="44.0" prefWidth="798.0" spacing="10.0">
+      <HBox alignment="CENTER_RIGHT" layoutX="14.0" layoutY="502.0" prefHeight="44.0" prefWidth="922.0" spacing="10.0">
          <children>
             <Label disable="true" prefHeight="32.0" prefWidth="198.0" text="Valuation of the portfolio" textAlignment="CENTER">
                <font>
@@ -98,19 +97,14 @@
                </font>
             </Label>
             <Label disable="true" text="Invested capital" />
-            <Label fx:id="invested_capital" text="......................" />
+            <Label fx:id="invested_capital" alignment="CENTER" prefHeight="17.0" prefWidth="101.0" text="......................" textAlignment="CENTER" />
             <Label disable="true" text="Current Valuation" />
-            <Label fx:id="portfolio_valuation" text="......................" />
+            <Label fx:id="portfolio_valuation" alignment="CENTER" prefHeight="17.0" prefWidth="101.0" text="......................" />
             <Label disable="true" text="Result" />
-            <Label fx:id="portfolio_result" text="......................" />
+            <Label fx:id="portfolio_result" contentDisplay="CENTER" prefHeight="17.0" prefWidth="101.0" text="......................" />
             <Label disable="true" text="Return rate" />
-            <Label fx:id="return_rate" text="......................" />
+            <Label fx:id="return_rate" alignment="CENTER" text="......................" />
          </children>
       </HBox>
-      <VBox id="ProgressBox" layoutX="6.0" layoutY="502.0" prefHeight="44.0" prefWidth="100.0">
-         <children>
-            <ProgressIndicator id="progressCircle" prefHeight="85.0" prefWidth="100.0" progress="0.0" />
-         </children>
-      </VBox>
    </children>
 </Pane>

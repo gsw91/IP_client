@@ -44,6 +44,7 @@ public class QuotationsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        name.setSortType(TableColumn.SortType.ASCENDING);
         data = FXCollections.observableArrayList(QuotationsMap.getData().values());
 
         logger.info("Start initialize the quotations table, quantity: " + QuotationsMap.getData().size());
@@ -58,6 +59,7 @@ public class QuotationsController implements Initializable {
 
         logger.info("Setting the data, quantity: " + data.size());
         currentQuotations.setItems(data);
+        currentQuotations.getSortOrder().add(name);
     }
 
     public void filterAction() {
@@ -75,6 +77,7 @@ public class QuotationsController implements Initializable {
         SortedList<Share> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(currentQuotations.comparatorProperty());
         currentQuotations.setItems(sortedData);
+        currentQuotations.getSortOrder().add(name);
     }
 
     public void closeButtonAction(){

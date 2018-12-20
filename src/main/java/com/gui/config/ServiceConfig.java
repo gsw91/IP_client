@@ -21,6 +21,7 @@ public final class ServiceConfig {
     //instrument controller endpoints
     public final static String INSTRUMENT_BUY = getPropertyValue(endpoints, "address.service.instrument.buy");
     public final static String INSTRUMENT_GET_ALL = getPropertyValue(endpoints, "address.service.instrument.show");
+    public final static String INSTRUMENT_SELL = getPropertyValue(endpoints, "address.service.instrument.sell");
     //share controller endpoints
     public final static String GET_ALL_SHARES = getPropertyValue(endpoints, "address.service.share.all");
     public final static String GET_SHARE = getPropertyValue(endpoints, "address.service.share.getOne");

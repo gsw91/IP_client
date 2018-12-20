@@ -21,7 +21,7 @@ public class ThreadUpdate implements Runnable {
             try {
                 Thread.sleep(60000); // <- 1 min
                     Platform.runLater(() -> {
-                        CalculationMap.refreshUserInstrumentPrice();
+                        CalculationMap.setUserInstrumentPrice();
                         CalculationMap.calculateShareRatios();
                         QuotationsMap.setCurrentQuotations();
                         userController.rebuildUserTable();

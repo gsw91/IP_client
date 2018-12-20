@@ -32,12 +32,9 @@ public class InstrumentService implements GetRequestCreator {
                 List<InstrumentDto> instruments = setUserInstrumentsList(jsonArray);
 
                 for (InstrumentDto instrument : instruments) {
-                    CalculationMap.refreshUserInstrumentPrice(mapper.mapToInstrumentCalculation(instrument));
+                    CalculationMap.setUserInstrumentPrice(mapper.mapToInstrumentCalculation(instrument));
                 }
-                for (InstrumentDto instrument : instruments) {
-                    CalculationMap.calculateShareRatio(instrument.getId());
-                }
-
+                CalculationMap.calculateShareRatios();
                 logger.info("User instruments have been loaded, quantity: " + CalculationMap.getData().size());
                 return true;
             }

@@ -14,7 +14,7 @@ import com.gui.scene.FirstScene;
 import com.gui.config.GuiStage;
 import com.gui.scene.QuotationsScene;
 import com.gui.service.InstrumentService;
-import com.gui.service.ShareOperation;
+import com.gui.service.UserOperation;
 import com.gui.update.ThreadConfig;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -135,26 +135,44 @@ public class UserController implements Initializable {
 
     public void confirmTransactionAction() {
         if(labelAction.getText().equals("Buy instrument")) {
-            Long startTime = System.currentTimeMillis();
             InstrumentDto instrumentDto = null;
-            String shareIndex = instrumentAction.getText();
+            String shareIndex = instrumentAction.getText().toUpperCase();
             try {
                 Editor editor = new Editor();
-                Long userId = Long.valueOf(User.getUserInstance().getId());
+                Long userId = Long.valueOf(User.getUserInstance().getId().toUpperCase());
                 Long quantity = Long.valueOf(quantityAction.getText());
                 double price = Double.valueOf(editor.replaceComma(priceAction.getText()));
                 String currentDate = String.valueOf(LocalDate.now());
                 instrumentDto = new InstrumentDto(userId, quantity, shareIndex, price, currentDate);
             } catch (NumberFormatException nfe) {
-                System.out.println(nfe);
+                logger.warn("Wrong values");
             }
             if(QuotationsMap.getData().containsKey(shareIndex) && instrumentDto!=null) {
-                ShareOperation shareOperation = new ShareOperation();
-                shareOperation.buyShare(instrumentDto);
+                UserOperation userOperation = new UserOperation();
+                userOperation.buyShare(instrumentDto);
                 refreshUserPanel();
             }
-            Long end = System.currentTimeMillis();
-            System.out.println(end-startTime + " milis");
+        }
+        //if else syntax does not work
+        if(labelAction.getText().equals("Sell instrument")) {
+            String shareName = instrumentAction.getText().toUpperCase();
+            long quantity = 0L;
+            BigDecimal price = BigDecimal.ZERO;
+            try {
+                Editor editor = new Editor();
+                quantity = Long.valueOf(quantityAction.getText());
+                price = price.add(BigDecimal.valueOf(Double.valueOf(editor.replaceComma(priceAction.getText()))));
+            } catch (NumberFormatException nfe) {
+                logger.warn("Wrong values");
+            }
+            boolean condition = CalculationMap.getData().values().stream()
+                    .anyMatch(t->t.getName().equals(shareName));
+
+            if(condition && quantity!=0L && price.doubleValue()!=0) {
+                UserOperation userOperation = new UserOperation();
+                userOperation.sellShare(shareName, quantity, price);
+                refreshUserPanel();
+            }
         }
     }
 
@@ -162,6 +180,7 @@ public class UserController implements Initializable {
         logger.info("Start rebuilding table");
         data = FXCollections.observableArrayList(RecordList.getRecordList());
         userInstruments.setItems(data);
+        userInstruments.getSortOrder().add(name);
         logger.info("Recounting parameters");
         setValueToPortfolioInvestedCapital();
         setValueToPortfolioValuation();
@@ -171,8 +190,10 @@ public class UserController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        QuotationsMap.setCurrentQuotations();
         getUserInstruments();
-        RecordList.installCalculationList(CalculationMap.getData());
+        RecordList.reloadList(CalculationMap.getData());
+        name.setSortType(TableColumn.SortType.ASCENDING);
         data = FXCollections.observableArrayList(RecordList.getRecordList());
         logger.info("Start initialize the user table, quantity: " + RecordList.getRecordList().size());
 
@@ -198,6 +219,7 @@ public class UserController implements Initializable {
 
         logger.info("Setting the data, quantity: " + data.size());
         userInstruments.setItems(data);
+        userInstruments.getSortOrder().add(name);
 
         setValueToPortfolioInvestedCapital();
         setValueToPortfolioValuation();
@@ -208,8 +230,6 @@ public class UserController implements Initializable {
         setTransactionPanelVisibility(false);
 
         logger.info("User table completed");
-
-        QuotationsMap.setCurrentQuotations();
 
         logger.info("Run threads...");
         threadConfig.startThreadUpdate();
@@ -306,8 +326,9 @@ public class UserController implements Initializable {
     public void showStats() {}
 
     public void refreshUserPanel() {
+        CalculationMap.getData().clear();
         getUserInstruments();
-        CalculationMap.refreshUserInstrumentPrice();
+        CalculationMap.setUserInstrumentPrice();
         CalculationMap.calculateShareRatios();
         rebuildUserTable();
         logger.info("User table refreshed, all is up to date");

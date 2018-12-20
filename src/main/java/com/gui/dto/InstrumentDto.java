@@ -9,6 +9,8 @@ public final class InstrumentDto {
     private Double buyingPrice;
     private String buyingDate;
 
+
+
     public InstrumentDto(Long userId, Long quantity, String sharesIndex, Double buyingPrice, String buyingDate) {
         this.userId = userId;
         this.quantity = quantity;

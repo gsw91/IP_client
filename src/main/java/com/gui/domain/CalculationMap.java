@@ -17,10 +17,8 @@ public final class CalculationMap {
         return data;
     }
 
-    public static void refreshUserInstrumentPrice(InstrumentCalculation instrumentCalculation) {
-        SharePriceService sharePriceService = new SharePriceService();
-        String[] values = {instrumentCalculation.getName()};
-        BigDecimal currentPrice = sharePriceService.getSharePrice(values);
+    public static void setUserInstrumentPrice(InstrumentCalculation instrumentCalculation) {
+        BigDecimal currentPrice = QuotationsMap.getData().get(instrumentCalculation.getName()).getCurrentPrice();
         instrumentCalculation.setCurrentPrice(currentPrice.setScale(2, 2));
         data.put(instrumentCalculation.getId(), instrumentCalculation);
     }
@@ -31,18 +29,10 @@ public final class CalculationMap {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public static void calculateShareRatio(Long id) {
-        BigDecimal portfolioValuation = calculateCurrentValuation();
-        BigDecimal shareValuation = data.get(id).getCurrentValuation();
-        data.get(id).setShareRatio(
-                shareValuation.divide(portfolioValuation, 4, 4)
-        );
-    }
-
-    public static void refreshUserInstrumentPrice() {
+    public static void setUserInstrumentPrice() {
         LOGGER.info("Start updating prices");
         for(InstrumentCalculation calculation: data.values()) {
-            CalculationMap.refreshUserInstrumentPrice(calculation);
+            CalculationMap.setUserInstrumentPrice(calculation);
         }
         LOGGER.info("Prices up to date, recalculation of parameters");
     }
@@ -53,6 +43,14 @@ public final class CalculationMap {
         }
         RecordList.reloadList(data);
         LOGGER.info("Shares ratios up to date");
+    }
+
+    private static void calculateShareRatio(Long id) {
+        BigDecimal portfolioValuation = calculateCurrentValuation();
+        BigDecimal shareValuation = data.get(id).getCurrentValuation();
+        data.get(id).setShareRatio(
+                shareValuation.divide(portfolioValuation, 4, 4)
+        );
     }
 
 }
