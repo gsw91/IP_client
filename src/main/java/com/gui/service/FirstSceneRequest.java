@@ -1,6 +1,6 @@
 package com.gui.service;
 
-import com.gui.config.Status;
+import com.gui.controller.UserController;
 import com.gui.domain.simple.User;
 import com.gui.request.GetRequestCreator;
 import com.gui.request.RequestMethod;
@@ -12,6 +12,11 @@ import java.io.IOException;
 public class FirstSceneRequest implements GetRequestCreator {
 
     private Logger logger = Logger.getLogger(FirstSceneRequest.class);
+    private UserController userController = new UserController();
+
+    public void sendEmail(String email) {
+        userController.sendRemindEmailRequest(email);
+    }
 
     @Override
     public boolean sendGetRequest(String endpoint, String[] params, String[] values) {

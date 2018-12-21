@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
@@ -10,9 +12,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" prefHeight="352.0" prefWidth="502.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gui.controllerFX.SignInController">
+<GridPane alignment="center" hgap="10" prefHeight="352.0" prefWidth="502.0" vgap="10" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gui.controllerFX.SignInController">
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
@@ -21,20 +24,10 @@
       <RowConstraints />
       <RowConstraints />
    </rowConstraints>
-   <children>
       <Pane prefHeight="308.0" prefWidth="460.0">
-         <children>
-            <TextField fx:id="loginTF" layoutX="63.0" layoutY="129.0" prefHeight="25.0" prefWidth="160.0" promptText="Login" />
-            <PasswordField fx:id="passwordPF" layoutX="63.0" layoutY="172.0" prefHeight="25.0" prefWidth="160.0" promptText="Password" />
-            <Button fx:id="signInB" layoutX="63.0" layoutY="213.0" mnemonicParsing="false" onAction="#logIn" prefHeight="28.0" prefWidth="160.0" text="Sign in" />
-            <Button fx:id="createAccB" layoutX="64.0" layoutY="253.0" mnemonicParsing="false" onAction="#signUp" prefHeight="28.0" prefWidth="160.0" text="Create account" />
-            <TextField fx:id="loginRemTF" layoutX="238.0" layoutY="129.0" prefHeight="25.0" prefWidth="160.0" promptText="Login" />
-            <TextField fx:id="emailTF" layoutX="238.0" layoutY="172.0" prefHeight="25.0" prefWidth="160.0" promptText="Email" />
-            <Button fx:id="remindButton" layoutX="238.0" layoutY="213.0" mnemonicParsing="false" onAction="#remindPassword" prefHeight="28.0" prefWidth="160.0" text="Remind password" />
-            <Button fx:id="exitButton" layoutX="238.0" layoutY="253.0" mnemonicParsing="false" onAction="#exit" prefHeight="28.0" prefWidth="160.0" text="Exit" />
             <Separator layoutX="24.0" layoutY="115.0" prefHeight="0.0" prefWidth="417.0" />
             <Separator layoutX="230.0" layoutY="135.0" orientation="VERTICAL" prefHeight="157.0" prefWidth="6.0" />
-            <Label alignment="CENTER" contentDisplay="BOTTOM" layoutX="66.0" layoutY="27.0" opacity="0.64" prefHeight="54.0" prefWidth="328.0" text="Investment Portfolio" textAlignment="CENTER" textFill="#6f2020">
+            <Label alignment="CENTER" contentDisplay="BOTTOM" layoutX="66.0" layoutY="27.0" opacity="0.64" prefHeight="54.0" prefWidth="328.0" text="Investment Portfolio" textAlignment="CENTER" textFill="#790303">
                <effect>
                   <Glow />
                </effect>
@@ -50,7 +43,23 @@
                   <Font name="Calibri" size="11.0" />
                </font>
             </Label>
-         </children>
+            <RadioButton id="SignInRButton" fx:id="signInRB" layoutX="247.0" layoutY="133.0" mnemonicParsing="false" onAction="#signInRBAction" selected="true" text="Sign in" />
+            <RadioButton id="SignUpRButton" fx:id="signUpRB" layoutX="247.0" layoutY="164.0" mnemonicParsing="false" onAction="#signUpRBAction" text="Create an account" />
+            <RadioButton id="RemindPasswordRButton" fx:id="remindPasswordRB" layoutX="247.0" layoutY="197.0" mnemonicParsing="false" onAction="#remindPasswordRBAction" text="Remind the password" />
+            <VBox alignment="TOP_CENTER" blendMode="MULTIPLY" cacheHint="QUALITY" focusTraversable="true" layoutX="18.0" layoutY="118.0" prefHeight="200.0" prefWidth="213.0" spacing="10.0">
+                  <TextField fx:id="loginTF" prefHeight="25.0" prefWidth="160.0" promptText="Login" />
+                  <PasswordField fx:id="passwordPF" prefHeight="25.0" prefWidth="160.0" promptText="Password" />
+                  <TextField id="Email" fx:id="emailTF" prefHeight="25.0" prefWidth="160.0" promptText="Email" />
+                  <Button fx:id="signInB" mnemonicParsing="false" onAction="#logIn" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Sign in" />
+                  <Button fx:id="signUpB" mnemonicParsing="false" onAction="#signUp" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Sign up" />
+                  <Button fx:id="remindPasswordB" mnemonicParsing="false" onAction="#remindPassword" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Remind password" />
+               <opaqueInsets>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+            <Button layoutX="247.0" layoutY="226.0" mnemonicParsing="false" onAction="#exit" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Exit" />
       </Pane>
-   </children>
 </GridPane>
