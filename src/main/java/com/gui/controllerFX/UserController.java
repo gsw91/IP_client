@@ -1,5 +1,6 @@
 package com.gui.controllerFX;
 
+import com.gui.component.Confirmation;
 import com.gui.config.ServiceConfig;
 import com.gui.config.Status;
 import com.gui.domain.CalculationMap;
@@ -24,12 +25,15 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import org.apache.log4j.Logger;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserController implements Initializable {
 
@@ -100,10 +104,13 @@ public class UserController implements Initializable {
         labelAction.setVisible(visible);
         confirmAction.setVisible(visible);
         cancelAction.setVisible(visible);
+        instrumentAction.setText("");
         instrumentAction.setVisible(visible);
         instrumentAction.setManaged(true);
+        quantityAction.setText("");
         quantityAction.setVisible(visible);
         quantityAction.setManaged(true);
+        priceAction.setText("");
         priceAction.setVisible(visible);
         priceAction.setManaged(true);
     }
@@ -121,12 +128,18 @@ public class UserController implements Initializable {
         labelAction.setText("Buy instrument");
         confirmAction.setText("Buy");
         setTransactionPanelVisibility(true);
+        Set<String> buyList = QuotationsMap.getData().keySet();
+        TextFields.bindAutoCompletion(instrumentAction, buyList);
     }
 
     public void sellButtonAction() {
         labelAction.setText("Sell instrument");
         confirmAction.setText("Sell");
         setTransactionPanelVisibility(true);
+        Set<String> buyList = CalculationMap.getData().values().stream()
+                .map(InstrumentCalculation::getName)
+                .collect(Collectors.toSet());
+        TextFields.bindAutoCompletion(instrumentAction, buyList);
     }
 
     public void cancelTransactionAction() {
@@ -134,45 +147,31 @@ public class UserController implements Initializable {
     }
 
     public void confirmTransactionAction() {
-        if(labelAction.getText().equals("Buy instrument")) {
-            InstrumentDto instrumentDto = null;
-            String shareIndex = instrumentAction.getText().toUpperCase();
-            try {
-                Editor editor = new Editor();
-                Long userId = Long.valueOf(User.getUserInstance().getId().toUpperCase());
-                Long quantity = Long.valueOf(quantityAction.getText());
-                double price = Double.valueOf(editor.replaceComma(priceAction.getText()));
-                String currentDate = String.valueOf(LocalDate.now());
-                instrumentDto = new InstrumentDto(userId, quantity, shareIndex, price, currentDate);
-            } catch (NumberFormatException nfe) {
-                logger.warn("Wrong values");
-            }
-            if(QuotationsMap.getData().containsKey(shareIndex) && instrumentDto!=null) {
-                UserOperation userOperation = new UserOperation();
-                userOperation.buyShare(instrumentDto);
-                refreshUserPanel();
-            }
-        }
-        //if else syntax does not work
-        if(labelAction.getText().equals("Sell instrument")) {
-            String shareName = instrumentAction.getText().toUpperCase();
-            long quantity = 0L;
-            BigDecimal price = BigDecimal.ZERO;
-            try {
-                Editor editor = new Editor();
-                quantity = Long.valueOf(quantityAction.getText());
-                price = price.add(BigDecimal.valueOf(Double.valueOf(editor.replaceComma(priceAction.getText()))));
-            } catch (NumberFormatException nfe) {
-                logger.warn("Wrong values");
-            }
-            boolean condition = CalculationMap.getData().values().stream()
-                    .anyMatch(t->t.getName().equals(shareName));
-
-            if(condition && quantity!=0L && price.doubleValue()!=0) {
-                UserOperation userOperation = new UserOperation();
-                userOperation.sellShare(shareName, quantity, price);
-                refreshUserPanel();
-            }
+        Confirmation confirmation;
+        UserOperation userOperation = new UserOperation();
+        String instrument = instrumentAction.getText();
+        String quantity = quantityAction.getText();
+        String price = priceAction.getText();
+        String label = labelAction.getText();
+        switch (label) {
+            case "Buy instrument":
+                boolean isBought = userOperation.buyShare(instrument, quantity, price);
+                if(isBought) {
+                    refreshUserPanel();
+                    setTransactionPanelVisibility(true);
+                    confirmation = new Confirmation(Confirmation.BUY);
+                    confirmation.showConfirmation();
+                }
+                break;
+            case "Sell instrument":
+                boolean wasSold = userOperation.sellShare(instrument, quantity, price);
+                if(wasSold) {
+                    refreshUserPanel();
+                    setTransactionPanelVisibility(true);
+                    confirmation = new Confirmation(Confirmation.SELL);
+                    confirmation.showConfirmation();
+                }
+                break;
         }
     }
 

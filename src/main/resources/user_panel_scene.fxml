@@ -86,7 +86,7 @@
             <TextField fx:id="quantityAction" prefHeight="25.0" prefWidth="91.0" promptText="Quantity" />
             <TextField fx:id="priceAction" prefHeight="25.0" prefWidth="17.0" promptText="Price" />
             <Button fx:id="confirmAction" mnemonicParsing="false" onAction="#confirmTransactionAction" prefHeight="25.0" prefWidth="71.0" text="Confirm" />
-            <Button fx:id="cancelAction" mnemonicParsing="false" onAction="#cancelTransactionAction" prefHeight="25.0" prefWidth="72.0" text="Cancel" />
+            <Button fx:id="cancelAction" mnemonicParsing="false" onAction="#cancelTransactionAction" prefHeight="25.0" prefWidth="72.0" text="Close" />
          </children>
       </VBox>
       <HBox alignment="CENTER_RIGHT" layoutX="14.0" layoutY="502.0" prefHeight="44.0" prefWidth="922.0" spacing="10.0">

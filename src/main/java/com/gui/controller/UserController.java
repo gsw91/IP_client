@@ -20,8 +20,8 @@ public class UserController implements RequestCreator {
         try {
             URL urlPath = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) urlPath.openConnection();
-            String response = connection.getResponseMessage();
-            System.out.println(response);
+            connection.setRequestMethod("GET");
+
         } catch (IOException ioe) {
             logger.error(ioe.getMessage());
         }

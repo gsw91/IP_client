@@ -24,7 +24,9 @@
       <RowConstraints />
       <RowConstraints />
    </rowConstraints>
+   <children>
       <Pane prefHeight="308.0" prefWidth="460.0">
+         <children>
             <Separator layoutX="24.0" layoutY="115.0" prefHeight="0.0" prefWidth="417.0" />
             <Separator layoutX="230.0" layoutY="135.0" orientation="VERTICAL" prefHeight="157.0" prefWidth="6.0" />
             <Label alignment="CENTER" contentDisplay="BOTTOM" layoutX="66.0" layoutY="27.0" opacity="0.64" prefHeight="54.0" prefWidth="328.0" text="Investment Portfolio" textAlignment="CENTER" textFill="#790303">
@@ -47,12 +49,14 @@
             <RadioButton id="SignUpRButton" fx:id="signUpRB" layoutX="247.0" layoutY="164.0" mnemonicParsing="false" onAction="#signUpRBAction" text="Create an account" />
             <RadioButton id="RemindPasswordRButton" fx:id="remindPasswordRB" layoutX="247.0" layoutY="197.0" mnemonicParsing="false" onAction="#remindPasswordRBAction" text="Remind the password" />
             <VBox alignment="TOP_CENTER" blendMode="MULTIPLY" cacheHint="QUALITY" focusTraversable="true" layoutX="18.0" layoutY="118.0" prefHeight="200.0" prefWidth="213.0" spacing="10.0">
+               <children>
                   <TextField fx:id="loginTF" prefHeight="25.0" prefWidth="160.0" promptText="Login" />
                   <PasswordField fx:id="passwordPF" prefHeight="25.0" prefWidth="160.0" promptText="Password" />
                   <TextField id="Email" fx:id="emailTF" prefHeight="25.0" prefWidth="160.0" promptText="Email" />
                   <Button fx:id="signInB" mnemonicParsing="false" onAction="#logIn" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Sign in" />
                   <Button fx:id="signUpB" mnemonicParsing="false" onAction="#signUp" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Sign up" />
                   <Button fx:id="remindPasswordB" mnemonicParsing="false" onAction="#remindPassword" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Remind password" />
+               </children>
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
@@ -61,5 +65,7 @@
                </padding>
             </VBox>
             <Button layoutX="247.0" layoutY="226.0" mnemonicParsing="false" onAction="#exit" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Exit" />
+         </children>
       </Pane>
+   </children>
 </GridPane>
