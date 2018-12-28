@@ -33,6 +33,7 @@ public class UserOperation {
                 String currentDate = String.valueOf(LocalDate.now());
                 instrumentDto = new InstrumentDto(userId, qty, instrument, buyingPrice, currentDate);
                 logger.info("Buying operation received");
+                logger.info("Instrument: " + instrumentDto);
                 return instrumentController.addShare(instrumentDto);
             } catch (NumberFormatException nfe) {
                 warning = new Warning(Warning.FORMAT);

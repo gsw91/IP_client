@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gui.controllerFX.UserController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gui.controllerFX.UserController">
    <children>
       <MenuBar id="instrumentTable" fx:id="menuBar" blendMode="SRC_ATOP" layoutY="2.0" prefHeight="25.0" prefWidth="937.0">
         <menus>
@@ -27,7 +27,7 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Settings">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem id="deleteUser" mnemonicParsing="false" onAction="#deleteAccount" text="Delete account" />
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Edit">

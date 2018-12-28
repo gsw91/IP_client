@@ -1,5 +1,6 @@
 package com.gui.controller;
 
+import com.gui.config.ServiceConfig;
 import com.gui.dto.ShareDto;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class QuotationsControllerTestSuite {
         //before
         boolean isAvailable;
         try {
-            URL urlPath = new URL("http://localhost:8080/v1/share/all");
+            URL urlPath = new URL(ServiceConfig.SERVER_URL);
             HttpURLConnection connection = (HttpURLConnection) urlPath.openConnection();
             connection.getResponseCode();
             isAvailable = true;

@@ -10,6 +10,10 @@ import java.net.URL;
 
 public interface RequestCreator {
 
+    String CONNECTION_ERROR = "Connection error";
+    String TRUE = "true";
+    String FALSE = "false";
+
     default String sendGetRequest(String url, String requestMethod) throws IOException {
         URL urlPath = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) urlPath.openConnection();
@@ -52,8 +56,15 @@ public interface RequestCreator {
         return ServiceConfig.SERVER_URL + endpoint;
     }
 
-    default String generateUrlWithJSON(String endpoint, String JSON) {
-        return ServiceConfig.SERVER_URL + endpoint + JSON;
+    default String readResponse(HttpURLConnection connection) throws IOException{
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuilder content = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        return content.toString();
     }
 
 }

@@ -1,18 +1,18 @@
 package com.gui.controllerFX;
 
 import com.gui.component.Confirmation;
+import com.gui.component.Information;
+import com.gui.config.GuiStage;
 import com.gui.config.ServiceConfig;
 import com.gui.config.Status;
 import com.gui.domain.CalculationMap;
 import com.gui.domain.QuotationsMap;
+import com.gui.domain.RecordList;
 import com.gui.domain.simple.InstrumentCalculation;
 import com.gui.domain.simple.InstrumentRecord;
 import com.gui.domain.simple.User;
-import com.gui.domain.RecordList;
-import com.gui.dto.InstrumentDto;
 import com.gui.editor.Editor;
 import com.gui.scene.FirstScene;
-import com.gui.config.GuiStage;
 import com.gui.scene.QuotationsScene;
 import com.gui.service.InstrumentService;
 import com.gui.service.UserOperation;
@@ -30,7 +30,6 @@ import org.controlsfx.control.textfield.TextFields;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -100,6 +99,12 @@ public class UserController implements Initializable {
     @FXML
     private TextField priceAction;
 
+    public void deleteAccount() {
+        System.out.println("Bye bye");
+        Confirmation confirmation = new Confirmation(Confirmation.SURE);
+        confirmation.showConfirmation();
+    }
+
     private void setTransactionPanelVisibility(boolean visible) {
         labelAction.setVisible(visible);
         confirmAction.setVisible(visible);
@@ -147,7 +152,7 @@ public class UserController implements Initializable {
     }
 
     public void confirmTransactionAction() {
-        Confirmation confirmation;
+        Information information;
         UserOperation userOperation = new UserOperation();
         String instrument = instrumentAction.getText();
         String quantity = quantityAction.getText();
@@ -159,8 +164,8 @@ public class UserController implements Initializable {
                 if(isBought) {
                     refreshUserPanel();
                     setTransactionPanelVisibility(true);
-                    confirmation = new Confirmation(Confirmation.BUY);
-                    confirmation.showConfirmation();
+                    information = new Information(Information.BUY);
+                    information.showInformation();
                 }
                 break;
             case "Sell instrument":
@@ -168,8 +173,8 @@ public class UserController implements Initializable {
                 if(wasSold) {
                     refreshUserPanel();
                     setTransactionPanelVisibility(true);
-                    confirmation = new Confirmation(Confirmation.SELL);
-                    confirmation.showConfirmation();
+                    information = new Information(Information.SELL);
+                    information.showInformation();
                 }
                 break;
         }

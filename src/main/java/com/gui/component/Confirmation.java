@@ -6,8 +6,7 @@ import org.apache.log4j.Logger;
 
 public class Confirmation {
 
-    public final static String BUY = "The instrument has been bought.";
-    public final static String SELL = "The instrument has been sold.";
+    public final static String SURE = "Are you sure ?";
 
     private Logger logger = Logger.getLogger(Confirmation.class);
     private String message;
@@ -18,11 +17,15 @@ public class Confirmation {
 
     public void showConfirmation() {
         logger.info(message);
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.CLOSE);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
 
-        if(alert.getResult() == ButtonType.CLOSE) {
+        if(alert.getResult() == ButtonType.NO) {
             alert.close();
+        } else if (alert.getResult() == ButtonType.YES) {
+
+            System.out.println("Deleting the account!");
+
         }
     }
 

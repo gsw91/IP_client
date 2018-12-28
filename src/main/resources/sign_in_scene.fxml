@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" prefHeight="352.0" prefWidth="502.0" vgap="10" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gui.controllerFX.SignInController">
+<GridPane alignment="center" hgap="10" prefHeight="352.0" prefWidth="502.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gui.controllerFX.SignInController">
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
@@ -37,7 +37,7 @@
                   <Font name="Calibri Bold" size="31.0" />
                </font>
             </Label>
-            <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="BOTTOM" focusTraversable="true" layoutX="60.0" layoutY="102.0" prefHeight="3.0" prefWidth="341.0" text="Wrong login or password" textAlignment="CENTER" textFill="RED" visible="false">
+            <Label fx:id="infoLabel" alignment="CENTER" contentDisplay="BOTTOM" focusTraversable="true" layoutX="60.0" layoutY="102.0" prefHeight="3.0" prefWidth="341.0" text="Wrong login or password" textAlignment="CENTER" textFill="RED" visible="false">
                <effect>
                   <Glow />
                </effect>
@@ -45,15 +45,15 @@
                   <Font name="Calibri" size="11.0" />
                </font>
             </Label>
-            <RadioButton id="SignInRButton" fx:id="signInRB" layoutX="247.0" layoutY="133.0" mnemonicParsing="false" onAction="#signInRBAction" selected="true" text="Sign in" />
-            <RadioButton id="SignUpRButton" fx:id="signUpRB" layoutX="247.0" layoutY="164.0" mnemonicParsing="false" onAction="#signUpRBAction" text="Create an account" />
-            <RadioButton id="RemindPasswordRButton" fx:id="remindPasswordRB" layoutX="247.0" layoutY="197.0" mnemonicParsing="false" onAction="#remindPasswordRBAction" text="Remind the password" />
+            <RadioButton id="SignInRButton" fx:id="signInRB" layoutX="247.0" layoutY="133.0" mnemonicParsing="false" onAction="#signInRBAction" onMousePressed="#setWaitCursor" selected="true" text="Sign in" />
+            <RadioButton id="SignUpRButton" fx:id="signUpRB" layoutX="247.0" layoutY="164.0" mnemonicParsing="false" onAction="#signUpRBAction" onMousePressed="#setWaitCursor" text="Create an account" />
+            <RadioButton id="RemindPasswordRButton" fx:id="remindPasswordRB" layoutX="247.0" layoutY="197.0" mnemonicParsing="false" onAction="#remindPasswordRBAction" onMousePressed="#setWaitCursor" text="Remind the password" />
             <VBox alignment="TOP_CENTER" blendMode="MULTIPLY" cacheHint="QUALITY" focusTraversable="true" layoutX="18.0" layoutY="118.0" prefHeight="200.0" prefWidth="213.0" spacing="10.0">
                <children>
                   <TextField fx:id="loginTF" prefHeight="25.0" prefWidth="160.0" promptText="Login" />
                   <PasswordField fx:id="passwordPF" prefHeight="25.0" prefWidth="160.0" promptText="Password" />
                   <TextField id="Email" fx:id="emailTF" prefHeight="25.0" prefWidth="160.0" promptText="Email" />
-                  <Button fx:id="signInB" mnemonicParsing="false" onAction="#logIn" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Sign in" />
+                  <Button fx:id="signInB" mnemonicParsing="false" onAction="#logIn" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Log in" />
                   <Button fx:id="signUpB" mnemonicParsing="false" onAction="#signUp" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Sign up" />
                   <Button fx:id="remindPasswordB" mnemonicParsing="false" onAction="#remindPassword" onMousePressed="#setWaitCursor" prefHeight="28.0" prefWidth="160.0" text="Remind password" />
                </children>

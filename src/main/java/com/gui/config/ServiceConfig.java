@@ -18,6 +18,7 @@ public final class ServiceConfig {
     public final static String USER_SIGN_IN = getPropertyValue(endpoints, "address.service.user.login");
     public final static String USER_CHECK_MAIL = getPropertyValue(endpoints, "address.service.user.checkMail");
     public final static String USER_CREATE = getPropertyValue(endpoints, "address.service.user.create");
+    public final static String USER_DELETE = getPropertyValue(endpoints, "address.service.user.delete");
     //instrument controller endpoints
     public final static String INSTRUMENT_BUY = getPropertyValue(endpoints, "address.service.instrument.buy");
     public final static String INSTRUMENT_GET_ALL = getPropertyValue(endpoints, "address.service.instrument.show");

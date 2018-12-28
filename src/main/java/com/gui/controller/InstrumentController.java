@@ -69,16 +69,4 @@ public class InstrumentController implements RequestCreator {
         }
     }
 
-    private String readResponse(HttpURLConnection connection) throws IOException{
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuilder content = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
-        }
-        logger.info("Response: " + content.toString());
-        in.close();
-        return content.toString();
-    }
-
 }

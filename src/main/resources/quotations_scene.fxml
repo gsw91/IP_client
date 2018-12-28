@@ -12,7 +12,7 @@
    <children>
       <TableView fx:id="currentQuotations" layoutX="4.0" layoutY="40.0" prefHeight="588.0" prefWidth="407.0">
          <columns>
-            <TableColumn fx:id="name" prefWidth="116.0" text="Name" />
+            <TableColumn fx:id="name" prefWidth="116.0" text="Index" />
             <TableColumn fx:id="currentPrice" prefWidth="116.0" text="Current Price" />
             <TableColumn fx:id="actualizationDate" prefWidth="160.0" text="Actualization Date" />
          </columns>

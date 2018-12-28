@@ -1,5 +1,7 @@
 package com.gui.dto;
 
+import java.util.Objects;
+
 public final class InstrumentDto {
 
     private Long id;
@@ -64,5 +66,21 @@ public final class InstrumentDto {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InstrumentDto that = (InstrumentDto) o;
+        return Objects.equals(userId, that.userId) &&
+                Objects.equals(quantity, that.quantity) &&
+                Objects.equals(sharesIndex, that.sharesIndex) &&
+                Objects.equals(buyingPrice, that.buyingPrice) &&
+                Objects.equals(buyingDate, that.buyingDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, quantity, sharesIndex, buyingPrice, buyingDate);
+    }
 }
 

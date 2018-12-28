@@ -4,12 +4,12 @@ import com.gui.config.GuiStage;
 import com.gui.config.ServiceConfig;
 import com.gui.config.Status;
 import com.gui.scene.UserStage;
-import com.gui.service.FirstSceneRequest;
+import com.gui.service.FirstSceneService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class SignInController implements Initializable {
     private RadioButton remindPasswordRB;
 
     @FXML
-    private Label warningLabel;
+    private Label infoLabel;
 
     @FXML
     private Button signInB;
@@ -50,7 +50,7 @@ public class SignInController implements Initializable {
     @FXML
     private Button remindPasswordB;
 
-    private FirstSceneRequest firstSceneRequest = new FirstSceneRequest();
+    private FirstSceneService firstSceneService = new FirstSceneService();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,10 +83,13 @@ public class SignInController implements Initializable {
             signUpB.setVisible(false);
             remindPasswordB.setManaged(false);
             remindPasswordB.setVisible(false);
+            loginTF.setText("");
             loginTF.setManaged(true);
             loginTF.setVisible(true);
+            passwordPF.setText("");
             passwordPF.setManaged(true);
             passwordPF.setVisible(true);
+            emailTF.setText("");
             emailTF.setManaged(false);
             emailTF.setVisible(false);
         } else if (signUpRB.isSelected()) {
@@ -96,10 +99,13 @@ public class SignInController implements Initializable {
             signUpB.setManaged(true);
             remindPasswordB.setVisible(false);
             remindPasswordB.setManaged(false);
+            loginTF.setText("");
             loginTF.setVisible(true);
             loginTF.setManaged(true);
+            passwordPF.setText("");
             passwordPF.setVisible(true);
             passwordPF.setManaged(true);
+            emailTF.setText("");
             emailTF.setVisible(true);
             emailTF.setManaged(true);
         } else if (remindPasswordRB.isSelected()) {
@@ -109,16 +115,17 @@ public class SignInController implements Initializable {
             signUpB.setManaged(false);
             remindPasswordB.setVisible(true);
             remindPasswordB.setManaged(true);
+            loginTF.setText("");
             loginTF.setVisible(false);
             loginTF.setManaged(false);
+            passwordPF.setText("");
             passwordPF.setVisible(false);
             passwordPF.setManaged(false);
+            emailTF.setText("");
             emailTF.setVisible(true);
             emailTF.setManaged(true);
         }
     }
-
-
 
     public void exit() {
         System.exit(0);
@@ -146,40 +153,53 @@ public class SignInController implements Initializable {
         String password = passwordPF.getText();
         String[] params = {"name", "password"};
         String[] values = {login, password};
-        boolean isLogged = firstSceneRequest.sendGetRequest(ServiceConfig.USER_SIGN_IN, params, values);
+        boolean isLogged = firstSceneService.sendGetRequest(ServiceConfig.USER_SIGN_IN, params, values);
         if(Status.getServerStatus() && isLogged) {
             setDefaultCursor();
             UserStage userStage = UserStage.getInstance();
             userStage.setUserScene(GuiStage.GUI_STAGE);
             logger.info("User signed in successfully");
         } else if (Status.getServerStatus()){
-            showWarning("Wrong login or password");
+            showInfoLabel("Wrong login or password", Color.RED);
             logger.warn("User sign in failed");
             setDefaultCursor();
         } else {
-            showWarning("The server is temporarily unavailable");
+            showInfoLabel("The server is temporarily unavailable", Color.RED);
             logger.warn("User sign in failed");
             setDefaultCursor();
         }
     }
 
-    public void signUp() throws InterruptedException {
-        Thread.sleep(3000);
-        showWarning("Connector to server lost");
+    public void signUp() {
+        String name = loginTF.getText();
+        String password = passwordPF.getText();
+        String email = emailTF.getText();
+        String[] response = firstSceneService.createUser(name, password, email);
+        boolean isCreated = Boolean.valueOf(response[0]);
+        if (isCreated) {
+            showInfoLabel(response[1], Color.GREEN);
+        } else {
+            showInfoLabel(response[1], Color.RED);
+        }
         setDefaultCursor();
     }
 
-    public void remindPassword() throws InterruptedException {
+    public void remindPassword() {
         String mail = emailTF.getText();
-        firstSceneRequest.sendEmail(mail);
-        showWarning("Connector to server lost");
-        Thread.sleep(3000);
+        String[] response = firstSceneService.sendEmail(mail);
+        boolean isCreated = Boolean.valueOf(response[0]);
+        if (isCreated) {
+            showInfoLabel(response[1], Color.GREEN);
+        } else {
+            showInfoLabel(response[1], Color.RED);
+        }
         setDefaultCursor();
     }
 
-    private void showWarning(String warning) {
-        warningLabel.setText(warning);
-        warningLabel.setVisible(true);
+    private void showInfoLabel(String warning, Color color) {
+        infoLabel.setText(warning);
+        infoLabel.setTextFill(color);
+        infoLabel.setVisible(true);
     }
 
 }

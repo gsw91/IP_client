@@ -23,7 +23,7 @@ public class ConnectorTestSuite {
     public void testCheckConnectionStatusToLocalHost() {
         //given
         Connector connector = new Connector();
-        String url = "http://localhost:8080/";
+        String url = ServiceConfig.SERVER_URL;
         //when
         boolean status = connector.checkConnectionStatus(url);
         //then

@@ -2,20 +2,51 @@ package com.gui.service;
 
 import com.gui.controller.UserController;
 import com.gui.domain.simple.User;
+import com.gui.dto.UserDto;
 import com.gui.request.GetRequestCreator;
+import com.gui.request.RequestCreator;
 import com.gui.request.RequestMethod;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class FirstSceneRequest implements GetRequestCreator {
+public class FirstSceneService implements GetRequestCreator, RequestCreator {
 
-    private Logger logger = Logger.getLogger(FirstSceneRequest.class);
+    private Logger logger = Logger.getLogger(FirstSceneService.class);
     private UserController userController = new UserController();
 
-    public void sendEmail(String email) {
-        userController.sendRemindEmailRequest(email);
+    public String[] createUser(String name, String password, String email) {
+        if (name.length() < 4)
+            return new String[]{FALSE, "The username length must be longer than 4 chars"};
+        else if (password.length() < 4)
+            return new String[]{FALSE, "The password length must be longer than 4 chars"};
+        else if (!email.contains("@") || !email.contains(".")) {
+            return new String[]{FALSE, "Incorrect email"};
+        }
+        logger.info("Creating new user...");
+        UserDto userDto = new UserDto(name, password, email);
+        String response = userController.createAccount(userDto);
+        if (response.contains("User created"))
+            return new String[]{TRUE, response};
+        else
+            return new String[]{FALSE, response};
+    }
+
+    public String[] sendEmail(String email) {
+        if (email.length()<4)
+            return new String[]{FALSE,"Email does not exist"};
+        String response = userController.sendRemindEmailRequest(email);
+        switch (response) {
+            case FALSE:
+                return new String[]{response, "Email does not exist"};
+            case TRUE:
+                return new String[]{response, "Email has been sent"};
+            case CONNECTION_ERROR:
+                return new String[]{FALSE, response};
+            default:
+                return new String[]{FALSE, response};
+        }
     }
 
     @Override
