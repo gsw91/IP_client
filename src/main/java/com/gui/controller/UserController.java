@@ -38,13 +38,13 @@ public class UserController implements RequestCreator {
 
     public String deleteAccount(String userId) {
         String endpoint = ServiceConfig.USER_DELETE;
-        String[] params = {"userIf"};
+        String[] params = {"userId"};
         String[] values = {userId};
         String url = generateUrlWithParams(endpoint, params, values);
         try {
             URL urlPath = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) urlPath.openConnection();
-            connection.setRequestMethod("GET");
+            connection.setRequestMethod("DELETE");
             connection.setDoOutput(true);
             connection.setDoInput(true);
             String output = readResponse(connection);

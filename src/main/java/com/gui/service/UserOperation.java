@@ -2,19 +2,28 @@ package com.gui.service;
 
 import com.gui.component.Warning;
 import com.gui.controller.InstrumentController;
+import com.gui.controller.UserController;
 import com.gui.domain.CalculationMap;
 import com.gui.domain.QuotationsMap;
 import com.gui.domain.simple.InstrumentCalculation;
 import com.gui.domain.simple.User;
 import com.gui.dto.InstrumentDto;
 import com.gui.editor.Editor;
+import com.gui.request.RequestCreator;
 import org.apache.log4j.Logger;
 import java.time.LocalDate;
 
 public class UserOperation {
 
     private InstrumentController instrumentController = new InstrumentController();
+    private UserController userController = new UserController();
     private Logger logger = Logger.getLogger(UserOperation.class);
+
+    public boolean deleteAccount() {
+        String userId = User.getUserInstance().getId();
+        String output = userController.deleteAccount(userId);
+        return output.equals(RequestCreator.TRUE);
+    }
 
     public boolean buyShare(String instrument, String quantity, String price) {
         InstrumentDto instrumentDto;
@@ -49,8 +58,10 @@ public class UserOperation {
         boolean doesNotUserHave = CalculationMap.getData().values().stream()
                 .noneMatch(t -> t.getName().equals(instrumentName));
         long totalInstrumentQty = CalculationMap.getData().values().stream()
+                .filter(t -> t.getName().equals(instrument))
                 .mapToLong(InstrumentCalculation::getQuantity)
-                .count();
+                .sum();
+        System.out.println("Total: " + totalInstrumentQty + ", to sell: " + quantity);
         if (doesNotUserHave) {
             warning = new Warning(Warning.NAME);
             warning.showWarning();

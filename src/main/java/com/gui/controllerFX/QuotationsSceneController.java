@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class QuotationsController implements Initializable {
+public class QuotationsSceneController implements Initializable {
 
     @FXML
     private TableView<Share> currentQuotations;
@@ -39,7 +39,7 @@ public class QuotationsController implements Initializable {
     @FXML
     private TextField shareFilter;
 
-    private Logger logger = Logger.getLogger(QuotationsController.class);
+    private Logger logger = Logger.getLogger(QuotationsSceneController.class);
     private ObservableList<Share> data;
 
     @Override

@@ -1,11 +1,10 @@
 package com.gui.update;
 
-import com.gui.controllerFX.UserController;
+import com.gui.controllerFX.UserSceneController;
 import net.jodah.concurrentunit.Waiter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.concurrent.TimeoutException;
@@ -14,14 +13,14 @@ import java.util.concurrent.TimeoutException;
 public class ThreadUpdateTestSuite {
 
     @InjectMocks
-    private UserController userController;
+    private UserSceneController userSceneController;
 
     private ThreadUpdate threadUpdate;
 
     @Test
     public void testThreadUpdate() throws TimeoutException {
         final Waiter waiter = new Waiter();
-        threadUpdate = new ThreadUpdate(userController);
+        threadUpdate = new ThreadUpdate(userSceneController);
 
         new Thread(() -> {
             waiter.assertTrue(true);

@@ -24,17 +24,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UserController implements Initializable {
+public class UserSceneController implements Initializable {
 
     @FXML
     private TableView<InstrumentRecord> userInstruments;
@@ -99,98 +101,10 @@ public class UserController implements Initializable {
     @FXML
     private TextField priceAction;
 
-    public void deleteAccount() {
-        System.out.println("Bye bye");
-        Confirmation confirmation = new Confirmation(Confirmation.SURE);
-        confirmation.showConfirmation();
-    }
-
-    private void setTransactionPanelVisibility(boolean visible) {
-        labelAction.setVisible(visible);
-        confirmAction.setVisible(visible);
-        cancelAction.setVisible(visible);
-        instrumentAction.setText("");
-        instrumentAction.setVisible(visible);
-        instrumentAction.setManaged(true);
-        quantityAction.setText("");
-        quantityAction.setVisible(visible);
-        quantityAction.setManaged(true);
-        priceAction.setText("");
-        priceAction.setVisible(visible);
-        priceAction.setManaged(true);
-    }
-
-    private Logger logger = Logger.getLogger(UserController.class);
-    private Editor editor = new Editor();
     private ObservableList<InstrumentRecord> data;
+    private Logger logger = Logger.getLogger(UserSceneController.class);
+    private Editor editor = new Editor();
     private ThreadConfig threadConfig = new ThreadConfig(this);
-
-    private void setUserLabel() {
-        userLabel.setText("User: " + User.getUserInstance().getUserName());
-    }
-
-    public void buyButtonAction() {
-        labelAction.setText("Buy instrument");
-        confirmAction.setText("Buy");
-        setTransactionPanelVisibility(true);
-        Set<String> buyList = QuotationsMap.getData().keySet();
-        TextFields.bindAutoCompletion(instrumentAction, buyList);
-    }
-
-    public void sellButtonAction() {
-        labelAction.setText("Sell instrument");
-        confirmAction.setText("Sell");
-        setTransactionPanelVisibility(true);
-        Set<String> buyList = CalculationMap.getData().values().stream()
-                .map(InstrumentCalculation::getName)
-                .collect(Collectors.toSet());
-        TextFields.bindAutoCompletion(instrumentAction, buyList);
-    }
-
-    public void cancelTransactionAction() {
-        setTransactionPanelVisibility(false);
-    }
-
-    public void confirmTransactionAction() {
-        Information information;
-        UserOperation userOperation = new UserOperation();
-        String instrument = instrumentAction.getText();
-        String quantity = quantityAction.getText();
-        String price = priceAction.getText();
-        String label = labelAction.getText();
-        switch (label) {
-            case "Buy instrument":
-                boolean isBought = userOperation.buyShare(instrument, quantity, price);
-                if(isBought) {
-                    refreshUserPanel();
-                    setTransactionPanelVisibility(true);
-                    information = new Information(Information.BUY);
-                    information.showInformation();
-                }
-                break;
-            case "Sell instrument":
-                boolean wasSold = userOperation.sellShare(instrument, quantity, price);
-                if(wasSold) {
-                    refreshUserPanel();
-                    setTransactionPanelVisibility(true);
-                    information = new Information(Information.SELL);
-                    information.showInformation();
-                }
-                break;
-        }
-    }
-
-    public void rebuildUserTable() {
-        logger.info("Start rebuilding table");
-        data = FXCollections.observableArrayList(RecordList.getRecordList());
-        userInstruments.setItems(data);
-        userInstruments.getSortOrder().add(name);
-        logger.info("Recounting parameters");
-        setValueToPortfolioInvestedCapital();
-        setValueToPortfolioValuation();
-        setValueToPortfolioReturnRate();
-        setValueToPortfolioResult();
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -285,6 +199,101 @@ public class UserController implements Initializable {
         } else {
             portfolio_result.setTextFill(Color.web("#3bd000"));
         }
+    }
+
+    private void setTransactionPanelVisibility(boolean visible) {
+        labelAction.setVisible(visible);
+        confirmAction.setVisible(visible);
+        cancelAction.setVisible(visible);
+        instrumentAction.setText("");
+        instrumentAction.setVisible(visible);
+        instrumentAction.setManaged(true);
+        quantityAction.setText("");
+        quantityAction.setVisible(visible);
+        quantityAction.setManaged(true);
+        priceAction.setText("");
+        priceAction.setVisible(visible);
+        priceAction.setManaged(true);
+    }
+
+    private void setUserLabel() {
+        userLabel.setText("User: " + User.getUserInstance().getUserName());
+    }
+
+    public void deleteAccount() throws IOException {
+        System.out.println("Bye bye");
+        Confirmation confirmation = new Confirmation(Confirmation.DELETE);
+        boolean isDeleted = confirmation.showConfirmation();
+        if (isDeleted)
+            User.logOutOfUser();
+            RecordList.clearList();
+            FirstScene firstScene = new FirstScene();
+            firstScene.createFirstWindow(GuiStage.GUI_STAGE);
+    }
+
+    public void buyButtonAction() {
+        labelAction.setText("Buy instrument");
+        confirmAction.setText("Buy");
+        setTransactionPanelVisibility(true);
+        Set<String> buyList = QuotationsMap.getData().keySet();
+        TextFields.bindAutoCompletion(instrumentAction, new HashSet<>());
+        TextFields.bindAutoCompletion(instrumentAction, buyList);
+    }
+
+    public void sellButtonAction() {
+        labelAction.setText("Sell instrument");
+        confirmAction.setText("Sell");
+        setTransactionPanelVisibility(true);
+        Set<String> buyList = CalculationMap.getData().values().stream()
+                .map(InstrumentCalculation::getName)
+                .collect(Collectors.toSet());
+        TextFields.bindAutoCompletion(instrumentAction, new HashSet<>());
+        TextFields.bindAutoCompletion(instrumentAction, buyList);
+    }
+
+    public void cancelTransactionAction() {
+        setTransactionPanelVisibility(false);
+    }
+
+    public void confirmTransactionAction() {
+        Information information;
+        UserOperation userOperation = new UserOperation();
+        String instrument = instrumentAction.getText();
+        String quantity = quantityAction.getText();
+        String price = priceAction.getText();
+        String label = labelAction.getText();
+        switch (label) {
+            case "Buy instrument":
+                boolean isBought = userOperation.buyShare(instrument, quantity, price);
+                if(isBought) {
+                    refreshUserPanel();
+                    setTransactionPanelVisibility(true);
+                    information = new Information(Information.BUY);
+                    information.showInformation();
+                }
+                break;
+            case "Sell instrument":
+                boolean wasSold = userOperation.sellShare(instrument, quantity, price);
+                if(wasSold) {
+                    refreshUserPanel();
+                    setTransactionPanelVisibility(true);
+                    information = new Information(Information.SELL);
+                    information.showInformation();
+                }
+                break;
+        }
+    }
+
+    public void rebuildUserTable() {
+        logger.info("Start rebuilding table");
+        data = FXCollections.observableArrayList(RecordList.getRecordList());
+        userInstruments.setItems(data);
+        userInstruments.getSortOrder().add(name);
+        logger.info("Recounting parameters");
+        setValueToPortfolioInvestedCapital();
+        setValueToPortfolioValuation();
+        setValueToPortfolioReturnRate();
+        setValueToPortfolioResult();
     }
 
     public void setLogOutButtonAction() {

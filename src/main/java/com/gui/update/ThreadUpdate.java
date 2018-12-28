@@ -1,6 +1,6 @@
 package com.gui.update;
 
-import com.gui.controllerFX.UserController;
+import com.gui.controllerFX.UserSceneController;
 import com.gui.domain.CalculationMap;
 import com.gui.domain.QuotationsMap;
 import javafx.application.Platform;
@@ -9,10 +9,10 @@ import org.apache.log4j.Logger;
 public class ThreadUpdate implements Runnable {
 
     private Logger logger = Logger.getLogger(ThreadUpdate.class);
-    private UserController userController;
+    private UserSceneController userSceneController;
 
-    protected ThreadUpdate(UserController userController) {
-        this.userController = userController;
+    protected ThreadUpdate(UserSceneController userSceneController) {
+        this.userSceneController = userSceneController;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class ThreadUpdate implements Runnable {
                         CalculationMap.setUserInstrumentPrice();
                         CalculationMap.calculateShareRatios();
                         QuotationsMap.setCurrentQuotations();
-                        userController.rebuildUserTable();
+                        userSceneController.rebuildUserTable();
                         logger.info("All data to date");
                     });
             } catch (InterruptedException e) {

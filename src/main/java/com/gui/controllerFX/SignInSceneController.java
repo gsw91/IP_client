@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SignInController implements Initializable {
+public class SignInSceneController implements Initializable {
 
-    private Logger logger = Logger.getLogger(SignInController.class);
+    private Logger logger = Logger.getLogger(SignInSceneController.class);
 
     @FXML
     private TextField loginTF;
@@ -61,18 +61,21 @@ public class SignInController implements Initializable {
         signUpRB.setSelected(false);
         remindPasswordRB.setSelected(false);
         configureComponents();
+        setDefaultCursor();
     }
 
     public void signUpRBAction() {
         signInRB.setSelected(false);
         remindPasswordRB.setSelected(false);
         configureComponents();
+        setDefaultCursor();
     }
 
     public void remindPasswordRBAction() {
         signUpRB.setSelected(false);
         signInRB.setSelected(false);
         configureComponents();
+        setDefaultCursor();
     }
 
     private void configureComponents() {
@@ -142,7 +145,7 @@ public class SignInController implements Initializable {
         passwordPF.setCursor(Cursor.WAIT);
     }
 
-    public void setDefaultCursor() {
+    private void setDefaultCursor() {
         changeCursor(Cursor.HAND);
         loginTF.setCursor(Cursor.TEXT);
         passwordPF.setCursor(Cursor.TEXT);
