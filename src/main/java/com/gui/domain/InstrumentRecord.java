@@ -60,4 +60,22 @@ public final class InstrumentRecord {
         return result;
     }
 
+    public void setShareRatio(String shareRatio) {
+        this.shareRatio = shareRatio;
+    }
+
+    @Override
+    public String toString() {
+        return "InstrumentRecord{" +
+                "name='" + name + '\'' +
+                ", quantity='" + quantity + '\'' +
+                ", buyingPrice='" + buyingPrice + '\'' +
+                ", investedCapital='" + investedCapital + '\'' +
+                ", currentPrice='" + currentPrice + '\'' +
+                ", currentValuation='" + currentValuation + '\'' +
+                ", shareRatio='" + shareRatio + '\'' +
+                ", returnRate='" + returnRate + '\'' +
+                ", result='" + result + '\'' +
+                '}';
+    }
 }
