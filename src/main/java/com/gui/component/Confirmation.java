@@ -1,6 +1,6 @@
 package com.gui.component;
 
-import com.gui.domain.simple.User;
+import com.gui.domain.User;
 import com.gui.service.UserOperation;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -18,7 +18,6 @@ public class Confirmation {
     }
 
     public boolean showConfirmation() {
-        logger.info(message);
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
 
@@ -29,12 +28,15 @@ public class Confirmation {
                 } else if (alert.getResult() == ButtonType.YES) {
                     UserOperation userOperation = new UserOperation();
                     boolean isRemoved = userOperation.deleteAccount();
-                    if(isRemoved)
+                    if(isRemoved) {
                         logger.info("Account of user " + User.getUserInstance().getUserName() + " was deleted");
-                    else
+                        Information information = new Information(Information.DELETE);
+                        information.showInformation();
+                    } else {
                         logger.info("Can not delete the account");
                         Error error = new Error(Error.SERVER);
                         error.showError();
+                    }
                     alert.close();
                     return isRemoved;
                 }

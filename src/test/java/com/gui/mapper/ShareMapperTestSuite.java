@@ -1,6 +1,6 @@
 package com.gui.mapper;
 
-import com.gui.domain.simple.Share;
+import com.gui.domain.Share;
 import com.gui.dto.ShareDto;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,9 +9,7 @@ import org.junit.runners.JUnit4;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RunWith(JUnit4.class)

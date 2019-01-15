@@ -1,4 +1,4 @@
-package com.gui.domain.simple;
+package com.gui.domain;
 
 public final class InstrumentRecord {
 

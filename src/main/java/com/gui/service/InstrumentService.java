@@ -1,6 +1,6 @@
 package com.gui.service;
 
-import com.gui.domain.CalculationMap;
+import com.gui.data.CalculationMap;
 import com.gui.dto.InstrumentDto;
 import com.gui.mapper.InstrumentMapper;
 import com.gui.request.GetRequestCreator;

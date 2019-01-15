@@ -1,17 +1,10 @@
 package com.gui.service;
 
 import com.gui.Main;
-import com.gui.controller.InstrumentController;
-import com.gui.dto.InstrumentDto;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.testfx.framework.junit.ApplicationTest;
 
 public class UserOperationTestSuite extends ApplicationTest {

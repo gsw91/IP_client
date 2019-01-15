@@ -1,7 +1,7 @@
 package com.gui.mapper;
 
-import com.gui.domain.simple.InstrumentCalculation;
-import com.gui.domain.simple.InstrumentRecord;
+import com.gui.domain.InstrumentCalculation;
+import com.gui.domain.InstrumentRecord;
 import com.gui.dto.InstrumentDto;
 import org.junit.Assert;
 import org.junit.Before;

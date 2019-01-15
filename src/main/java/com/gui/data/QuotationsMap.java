@@ -1,6 +1,6 @@
-package com.gui.domain;
+package com.gui.data;
 
-import com.gui.domain.simple.Share;
+import com.gui.domain.Share;
 import com.gui.service.QuotationsService;
 import org.apache.log4j.Logger;
 

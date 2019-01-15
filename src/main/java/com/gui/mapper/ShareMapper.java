@@ -1,6 +1,6 @@
 package com.gui.mapper;
 
-import com.gui.domain.simple.Share;
+import com.gui.domain.Share;
 import com.gui.dto.ShareDto;
 
 import java.math.BigDecimal;

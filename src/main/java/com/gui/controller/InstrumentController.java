@@ -2,7 +2,7 @@ package com.gui.controller;
 
 import com.google.gson.Gson;
 import com.gui.config.ServiceConfig;
-import com.gui.domain.simple.User;
+import com.gui.domain.User;
 import com.gui.dto.InstrumentDto;
 import com.gui.request.RequestCreator;
 import org.apache.log4j.Logger;

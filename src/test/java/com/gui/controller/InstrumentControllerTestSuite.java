@@ -1,6 +1,6 @@
 package com.gui.controller;
 
-import com.gui.domain.simple.User;
+import com.gui.domain.User;
 import com.gui.dto.InstrumentDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;

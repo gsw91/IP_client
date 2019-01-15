@@ -1,7 +1,7 @@
 package com.gui.service;
 
 import com.gui.controller.UserController;
-import com.gui.domain.simple.User;
+import com.gui.domain.User;
 import com.gui.dto.UserDto;
 import com.gui.request.GetRequestCreator;
 import com.gui.request.RequestCreator;

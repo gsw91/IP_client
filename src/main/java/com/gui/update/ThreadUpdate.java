@@ -1,8 +1,8 @@
 package com.gui.update;
 
 import com.gui.controllerFX.UserSceneController;
-import com.gui.domain.CalculationMap;
-import com.gui.domain.QuotationsMap;
+import com.gui.data.CalculationMap;
+import com.gui.data.QuotationsMap;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 

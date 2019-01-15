@@ -3,10 +3,10 @@ package com.gui.service;
 import com.gui.component.Warning;
 import com.gui.controller.InstrumentController;
 import com.gui.controller.UserController;
-import com.gui.domain.CalculationMap;
-import com.gui.domain.QuotationsMap;
-import com.gui.domain.simple.InstrumentCalculation;
-import com.gui.domain.simple.User;
+import com.gui.data.CalculationMap;
+import com.gui.data.QuotationsMap;
+import com.gui.domain.InstrumentCalculation;
+import com.gui.domain.User;
 import com.gui.dto.InstrumentDto;
 import com.gui.editor.Editor;
 import com.gui.request.RequestCreator;
@@ -61,7 +61,6 @@ public class UserOperation {
                 .filter(t -> t.getName().equals(instrument))
                 .mapToLong(InstrumentCalculation::getQuantity)
                 .sum();
-        System.out.println("Total: " + totalInstrumentQty + ", to sell: " + quantity);
         if (doesNotUserHave) {
             warning = new Warning(Warning.NAME);
             warning.showWarning();

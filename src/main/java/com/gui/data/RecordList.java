@@ -1,7 +1,7 @@
-package com.gui.domain;
+package com.gui.data;
 
-import com.gui.domain.simple.InstrumentCalculation;
-import com.gui.domain.simple.InstrumentRecord;
+import com.gui.domain.InstrumentCalculation;
+import com.gui.domain.InstrumentRecord;
 import com.gui.mapper.InstrumentMapper;
 
 import java.util.ArrayList;

@@ -26,6 +26,9 @@ public final class ServiceConfig {
     //share controller endpoints
     public final static String GET_ALL_SHARES = getPropertyValue(endpoints, "address.service.share.all");
     public final static String GET_SHARE = getPropertyValue(endpoints, "address.service.share.getOne");
+    //statistics controller endpoints
+    public final static String SHOW_STATS = getPropertyValue(endpoints, "address.service.statistics.show");
+    public final static String RESET_STATS = getPropertyValue(endpoints, "address.service.statistics.reset");
 
     private static String getPropertyValue(File file, String property) {
         Properties properties = new Properties();

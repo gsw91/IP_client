@@ -5,13 +5,15 @@ import com.gui.component.Information;
 import com.gui.config.GuiStage;
 import com.gui.config.ServiceConfig;
 import com.gui.config.Status;
-import com.gui.domain.CalculationMap;
-import com.gui.domain.QuotationsMap;
-import com.gui.domain.RecordList;
-import com.gui.domain.simple.InstrumentCalculation;
-import com.gui.domain.simple.InstrumentRecord;
-import com.gui.domain.simple.User;
+import com.gui.data.CalculationMap;
+import com.gui.data.QuotationsMap;
+import com.gui.data.RecordList;
+import com.gui.domain.InstrumentCalculation;
+import com.gui.domain.InstrumentRecord;
+import com.gui.domain.User;
 import com.gui.editor.Editor;
+import com.gui.editor.TableCellColor;
+import com.gui.editor.TableComparator;
 import com.gui.scene.FirstScene;
 import com.gui.scene.QuotationsScene;
 import com.gui.service.InstrumentService;
@@ -24,14 +26,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
 import org.apache.log4j.Logger;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -105,6 +106,7 @@ public class UserSceneController implements Initializable {
     private Logger logger = Logger.getLogger(UserSceneController.class);
     private Editor editor = new Editor();
     private ThreadConfig threadConfig = new ThreadConfig(this);
+    private AutoCompletionBinding<String> sharesList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -124,6 +126,17 @@ public class UserSceneController implements Initializable {
         shareRatio.setCellValueFactory(new PropertyValueFactory<>("shareRatio"));
         returnRate.setCellValueFactory(new PropertyValueFactory<>("returnRate"));
         result.setCellValueFactory(new PropertyValueFactory<>("result"));
+
+        setFontColor();
+
+        quantity.setSortable(false);
+        shareRatio.setComparator(new TableComparator(TableComparator.PERCENTAGES));
+        returnRate.setComparator(new TableComparator(TableComparator.PERCENTAGES));
+        buyingPrice.setComparator(new TableComparator(TableComparator.PRICES));
+        currentPrice.setComparator(new TableComparator(TableComparator.PRICES));
+        investedCapital.setComparator(new TableComparator(TableComparator.AMOUNTS));
+        currentValuation.setComparator(new TableComparator(TableComparator.AMOUNTS));
+        result.setComparator(new TableComparator(TableComparator.AMOUNTS));
 
         name.setStyle( "-fx-alignment: CENTER-LEFT;");
         quantity.setStyle( "-fx-alignment: CENTER-RIGHT;");
@@ -152,6 +165,11 @@ public class UserSceneController implements Initializable {
         logger.info("Run threads...");
         threadConfig.startThreadUpdate();
         logger.info("Threads have run");
+    }
+
+    private void setFontColor() {
+        returnRate.setCellFactory(new TableCellColor());
+        result.setCellFactory(new TableCellColor());
     }
 
     private void getUserInstruments() {
@@ -202,6 +220,8 @@ public class UserSceneController implements Initializable {
     }
 
     private void setTransactionPanelVisibility(boolean visible) {
+        if (sharesList != null)
+            sharesList.dispose();
         labelAction.setVisible(visible);
         confirmAction.setVisible(visible);
         cancelAction.setVisible(visible);
@@ -220,15 +240,20 @@ public class UserSceneController implements Initializable {
         userLabel.setText("User: " + User.getUserInstance().getUserName());
     }
 
-    public void deleteAccount() throws IOException {
-        System.out.println("Bye bye");
+    public void deleteAccount() {
         Confirmation confirmation = new Confirmation(Confirmation.DELETE);
         boolean isDeleted = confirmation.showConfirmation();
         if (isDeleted)
-            User.logOutOfUser();
-            RecordList.clearList();
-            FirstScene firstScene = new FirstScene();
-            firstScene.createFirstWindow(GuiStage.GUI_STAGE);
+            try {
+                threadConfig.interruptThreadUpdate();
+                User.logOutOfUser();
+                RecordList.clearList();
+                FirstScene firstScene = new FirstScene();
+                firstScene.createFirstWindow(GuiStage.GUI_STAGE);
+            } catch (IOException ioe) {
+                logger.error("Can not log out, system error");
+                System.exit(0);
+            }
     }
 
     public void buyButtonAction() {
@@ -236,19 +261,17 @@ public class UserSceneController implements Initializable {
         confirmAction.setText("Buy");
         setTransactionPanelVisibility(true);
         Set<String> buyList = QuotationsMap.getData().keySet();
-        TextFields.bindAutoCompletion(instrumentAction, new HashSet<>());
-        TextFields.bindAutoCompletion(instrumentAction, buyList);
+        sharesList = TextFields.bindAutoCompletion(instrumentAction, buyList);
     }
 
     public void sellButtonAction() {
         labelAction.setText("Sell instrument");
         confirmAction.setText("Sell");
         setTransactionPanelVisibility(true);
-        Set<String> buyList = CalculationMap.getData().values().stream()
+        Set<String> sellList = CalculationMap.getData().values().stream()
                 .map(InstrumentCalculation::getName)
                 .collect(Collectors.toSet());
-        TextFields.bindAutoCompletion(instrumentAction, new HashSet<>());
-        TextFields.bindAutoCompletion(instrumentAction, buyList);
+        sharesList = TextFields.bindAutoCompletion(instrumentAction, sellList);
     }
 
     public void cancelTransactionAction() {
@@ -270,15 +293,18 @@ public class UserSceneController implements Initializable {
                     setTransactionPanelVisibility(true);
                     information = new Information(Information.BUY);
                     information.showInformation();
+                    setTransactionPanelVisibility(false);
                 }
                 break;
             case "Sell instrument":
                 boolean wasSold = userOperation.sellShare(instrument, quantity, price);
                 if(wasSold) {
+                    setFontColor();
                     refreshUserPanel();
                     setTransactionPanelVisibility(true);
                     information = new Information(Information.SELL);
                     information.showInformation();
+                    setTransactionPanelVisibility(false);
                 }
                 break;
         }
@@ -340,6 +366,7 @@ public class UserSceneController implements Initializable {
 
     public void refreshUserPanel() {
         CalculationMap.getData().clear();
+        RecordList.clearList();
         getUserInstruments();
         CalculationMap.setUserInstrumentPrice();
         CalculationMap.calculateShareRatios();

@@ -8,6 +8,7 @@ public class Information {
 
     public final static String BUY = "The instrument has been bought.";
     public final static String SELL = "The instrument has been sold.";
+    public final static String DELETE = "The account has been just deleted";
 
     private Logger logger = Logger.getLogger(Information.class);
     private String message;

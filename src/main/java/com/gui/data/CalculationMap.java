@@ -1,7 +1,6 @@
-package com.gui.domain;
+package com.gui.data;
 
-import com.gui.domain.simple.InstrumentCalculation;
-import com.gui.service.SharePriceService;
+import com.gui.domain.InstrumentCalculation;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;

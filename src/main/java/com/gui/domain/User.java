@@ -1,4 +1,4 @@
-package com.gui.domain.simple;
+package com.gui.domain;
 
 import org.apache.log4j.Logger;
 

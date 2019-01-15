@@ -1,8 +1,8 @@
 package com.gui.controllerFX;
 
 import com.gui.config.Status;
-import com.gui.domain.QuotationsMap;
-import com.gui.domain.simple.Share;
+import com.gui.data.QuotationsMap;
+import com.gui.domain.Share;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
