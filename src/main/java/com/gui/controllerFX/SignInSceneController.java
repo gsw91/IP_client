@@ -1,10 +1,9 @@
 package com.gui.controllerFX;
 
 import com.gui.config.GuiStage;
-import com.gui.config.ServiceConfig;
 import com.gui.config.Status;
 import com.gui.scene.UserStage;
-import com.gui.service.FirstSceneService;
+import com.gui.service.UserOperation;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -50,7 +49,7 @@ public class SignInSceneController implements Initializable {
     @FXML
     private Button remindPasswordB;
 
-    private FirstSceneService firstSceneService = new FirstSceneService();
+    private UserOperation userOperation = new UserOperation();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -154,9 +153,7 @@ public class SignInSceneController implements Initializable {
     public void logIn() throws IOException {
         String login = loginTF.getText();
         String password = passwordPF.getText();
-        String[] params = {"name", "password"};
-        String[] values = {login, password};
-        boolean isLogged = firstSceneService.sendGetRequest(ServiceConfig.USER_SIGN_IN, params, values);
+        boolean isLogged = userOperation.signInUser(login, password);
         if(Status.getServerStatus() && isLogged) {
             setDefaultCursor();
             UserStage userStage = UserStage.getInstance();
@@ -177,7 +174,7 @@ public class SignInSceneController implements Initializable {
         String name = loginTF.getText();
         String password = passwordPF.getText();
         String email = emailTF.getText();
-        String[] response = firstSceneService.createUser(name, password, email);
+        String[] response = userOperation.createUser(name, password, email);
         boolean isCreated = Boolean.valueOf(response[0]);
         if (isCreated) {
             showInfoLabel(response[1], Color.GREEN);
@@ -189,7 +186,7 @@ public class SignInSceneController implements Initializable {
 
     public void remindPassword() {
         String mail = emailTF.getText();
-        String[] response = firstSceneService.sendEmail(mail);
+        String[] response = userOperation.sendEmail(mail);
         boolean isCreated = Boolean.valueOf(response[0]);
         if (isCreated) {
             showInfoLabel(response[1], Color.GREEN);

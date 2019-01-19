@@ -6,7 +6,6 @@ import com.gui.config.ServiceConfig;
 import com.gui.domain.User;
 import com.gui.dto.StatisticsDto;
 import com.gui.request.RequestCreator;
-import com.gui.request.RequestMethod;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class StatisticsController implements RequestCreator {
         String[] values = {userId};
         String url = generateUrlWithParams(ServiceConfig.SHOW_STATS, params, values);
         try {
-            String response = sendGetRequest(url, RequestMethod.GET);
+            String response = sendGetRequest(url);
             Type listType = new TypeToken<List<Object>>(){}.getType();
             Gson gson = new Gson();
             List<Object> objectsList = gson.fromJson(response, listType);

@@ -1,25 +1,37 @@
 package com.gui.controller;
 
+import com.gui.domain.User;
 import com.gui.dto.StatisticsDto;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
-@RunWith(JUnit4.class)
+@RunWith(MockitoJUnitRunner.class)
 public class StatisticsControllerTestSuite {
+
+    @Before
+    public void setInstances() {
+        User.setUserInstance("5", "test", "test", "some@email.com");
+    }
+
+    @After
+    public void removeInstance() {
+        User.logOutOfUser();
+    }
 
     @Test
     public void testGetStatistics() {
         //given
         StatisticsController statisticsController = new StatisticsController();
         //when
-        List<StatisticsDto> dtoList = statisticsController.getStatistics("362");
+        List<StatisticsDto> dtoList = statisticsController.getStatistics(User.getUserInstance().getId());
         //then
-        Assert.assertTrue(dtoList.size()>0);
-
+        Assert.assertEquals(0, dtoList.size());
     }
 
 }

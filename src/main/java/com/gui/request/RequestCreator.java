@@ -14,10 +14,10 @@ public interface RequestCreator {
     String TRUE = "true";
     String FALSE = "false";
 
-    default String sendGetRequest(String url, String requestMethod) throws IOException {
+    default String sendGetRequest(String url) throws IOException {
         URL urlPath = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) urlPath.openConnection();
-        connection.setRequestMethod(requestMethod);
+        connection.setRequestMethod("GET");
         int responseCode = connection.getResponseCode();
         if (responseCode == 200) {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

@@ -3,7 +3,6 @@ package com.gui.controllerFX;
 import com.gui.component.Confirmation;
 import com.gui.component.Information;
 import com.gui.config.GuiStage;
-import com.gui.config.ServiceConfig;
 import com.gui.config.Status;
 import com.gui.data.CalculationMap;
 import com.gui.data.QuotationsMap;
@@ -152,11 +151,7 @@ public class UserSceneController implements Initializable {
         userInstruments.setItems(data);
         userInstruments.getSortOrder().add(name);
 
-        setValueToPortfolioInvestedCapital();
-        setValueToPortfolioValuation();
-        setValueToPortfolioReturnRate();
-        setValueToPortfolioResult();
-
+        setSummary();
         setUserLabel();
         setTransactionPanelVisibility(false);
 
@@ -173,30 +168,39 @@ public class UserSceneController implements Initializable {
     }
 
     private void getUserInstruments() {
-        String[] params = {"userId"};
-        String[] values = {User.getUserInstance().getId()};
         InstrumentService service = new InstrumentService();
-        service.sendGetRequest(ServiceConfig.INSTRUMENT_GET_ALL, params, values);
+        service.loadUserInstruments();
     }
 
-    private void setValueToPortfolioInvestedCapital() {
+    private void setSummary() {
         BigDecimal investedCapital = CalculationMap.getData().values().stream()
                 .map(InstrumentCalculation::getInvestedCapital)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        String investedCapitalString = editor.setSpacesWithCurrency(String.valueOf(investedCapital.setScale(2, 2)));
-        invested_capital.setText(investedCapitalString);
+        BigDecimal currentValuation = CalculationMap.getData().values().stream()
+                .map(InstrumentCalculation::getCurrentValuation)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal result = CalculationMap.getData().values().stream()
+                .map(InstrumentCalculation::getResult)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal returnRate = result.divide(investedCapital, 4, 4).multiply(BigDecimal.valueOf(100));
+
+        setValueToPortfolioInvestedCapital(investedCapital);
+        setValueToPortfolioValuation(currentValuation);
+        setValueToPortfolioResult(result);
+        setValueToPortfolioReturnRate(returnRate);
+    }
+
+    private void setValueToPortfolioInvestedCapital(BigDecimal investedCapital) {
+        invested_capital.setText(editor.setSpacesWithCurrency(String.valueOf(investedCapital.setScale(2, 2))));
         invested_capital.setStyle("-fx-font-weight: bold");
     }
 
-    private void setValueToPortfolioValuation() {
-        portfolio_valuation.setText(editor.setSpacesWithCurrency(String.valueOf(CalculationMap.calculateCurrentValuation())));
+    private void setValueToPortfolioValuation(BigDecimal currentValuation) {
+        portfolio_valuation.setText(editor.setSpacesWithCurrency(String.valueOf(currentValuation)));
         portfolio_valuation.setStyle("-fx-font-weight: bold");
     }
 
-    private void setValueToPortfolioReturnRate() {
-        BigDecimal returnRate = CalculationMap.getData().values().stream()
-                .map(t -> t.getReturnRate().multiply(t.getShareRatio()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    private void setValueToPortfolioReturnRate(BigDecimal returnRate) {
         return_rate.setText(editor.setRate(String.valueOf(returnRate.setScale(2, 2))));
         return_rate.setStyle("-fx-font-weight: bold");
         if(returnRate.doubleValue() < 0) {
@@ -206,13 +210,10 @@ public class UserSceneController implements Initializable {
         }
     }
 
-    private void setValueToPortfolioResult() {
-        BigDecimal returnRate = CalculationMap.getData().values().stream()
-                .map(InstrumentCalculation::getResult)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        portfolio_result.setText(editor.setSpacesWithCurrency(String.valueOf(returnRate)));
+    private void setValueToPortfolioResult(BigDecimal result) {
+        portfolio_result.setText(editor.setSpacesWithCurrency(String.valueOf(result)));
         portfolio_result.setStyle("-fx-font-weight: bold");
-        if(returnRate.doubleValue() < 0) {
+        if(result.doubleValue() < 0) {
             portfolio_result.setTextFill(Color.web("#d03400"));
         } else {
             portfolio_result.setTextFill(Color.web("#3bd000"));
@@ -316,10 +317,7 @@ public class UserSceneController implements Initializable {
         userInstruments.setItems(data);
         userInstruments.getSortOrder().add(name);
         logger.info("Recounting parameters");
-        setValueToPortfolioInvestedCapital();
-        setValueToPortfolioValuation();
-        setValueToPortfolioReturnRate();
-        setValueToPortfolioResult();
+        setSummary();
     }
 
     public void setLogOutButtonAction() {

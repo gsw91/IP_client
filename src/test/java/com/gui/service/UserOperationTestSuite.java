@@ -1,42 +1,85 @@
 package com.gui.service;
 
-import com.gui.Main;
+import com.gui.controller.InstrumentController;
+import com.gui.controller.UserController;
+import com.gui.data.CalculationMap;
+import com.gui.data.QuotationsMap;
+import com.gui.domain.InstrumentCalculation;
+import com.gui.domain.User;
+import com.gui.dto.InstrumentDto;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 public class UserOperationTestSuite extends ApplicationTest {
 
-    @Ignore
+    @InjectMocks
+    private UserOperation userOperation;
+
+    @Mock
+    private UserController userController;
+
+    @Mock
+    private InstrumentController instrumentController;
+
     @Before
-    public void setUpClass() throws Exception {
-        ApplicationTest.launch(Main.class);
+    public void setTestData() {
+        QuotationsMap.setCurrentQuotations();
+        User.setUserInstance("111", "test", "test", "test@test.com");
+        CalculationMap.getData().put(1L, new InstrumentCalculation(1L, "PKNORLEN", 10L, BigDecimal.valueOf(99.12)));
     }
 
- //   @InjectMocks
-  //  private InstrumentController instrumentController;
+    @After
+    public void clearTestData() {
 
- //   @Mock
-    private UserOperation userOperation = new UserOperation();
+    }
 
-    @Ignore
     @Test
     public void testBuyShare() {
         //given
-//        Long userId = 111;
+        long userId = 111L;
         String instrument = "PKNORLEN";
-        String quantity = "1000";
-        String price = "10.25";
-//        when(instrumentController.addShare())
-//        String date = "2018-12-27";
-//        InstrumentDto instrumentDto = new InstrumentDto(userId, quantity, instrument, price, date);
+        long quantity = 1000L;
+        double price = 10.25;
+        String date = String.valueOf(LocalDate.now());
+        InstrumentDto instrumentDto = new InstrumentDto(userId, quantity, instrument, price, date);
+        when(instrumentController.addShare(instrumentDto)).thenReturn(true);
         //when
-        boolean isAdded = userOperation.buyShare(instrument, quantity, price);
+        boolean isAdded = userOperation.buyShare("PKNORLEN", "1000", "10.25");
         //then
         Assert.assertTrue(isAdded);
     }
 
+    @Test
+    public void testDeleteAccount() {
+        //given
+        when(userController.deleteAccount("111")).thenReturn("true");
+        //when
+        boolean isDeleted = userOperation.deleteAccount();
+        //then
+        Assert.assertTrue(isDeleted);
+    }
+
+    @Test
+    public void testSellShare() {
+        //given
+        when(instrumentController.sellShare("PKNORLEN", "10", "101.01")).thenReturn(true);
+        //when
+        boolean isSold = userOperation.sellShare("PKNORLEN", "10", "101.01");
+        //then
+        Assert.assertTrue(isSold);
+    }
 
 }

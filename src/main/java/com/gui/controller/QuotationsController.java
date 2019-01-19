@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import com.gui.config.ServiceConfig;
 import com.gui.dto.ShareDto;
 import com.gui.request.RequestCreator;
-import com.gui.request.RequestMethod;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class QuotationsController implements RequestCreator {
     public String getCurrentQuotationsResponse() {
         String url = generateUrl(ServiceConfig.GET_ALL_SHARES);
         try {
-            String response = sendGetRequest(url, RequestMethod.GET);
+            String response = sendGetRequest(url);
             if (response.length()>1000)
                 logger.info("Shares received");
             else

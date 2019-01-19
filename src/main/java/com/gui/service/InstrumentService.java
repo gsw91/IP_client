@@ -1,50 +1,35 @@
 package com.gui.service;
 
+import com.gui.controller.InstrumentController;
 import com.gui.data.CalculationMap;
+import com.gui.domain.User;
 import com.gui.dto.InstrumentDto;
 import com.gui.mapper.InstrumentMapper;
-import com.gui.request.GetRequestCreator;
-import com.gui.request.RequestMethod;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstrumentService implements GetRequestCreator {
+public class InstrumentService {
 
     private Logger logger = Logger.getLogger(InstrumentService.class);
     private InstrumentMapper mapper = new InstrumentMapper();
+    private InstrumentController instrumentController = new InstrumentController();
 
-    @Override
-    public boolean sendGetRequest(String endpoint, String[] params, String[] values) {
-        logger.info("Loading user instruments");
-        try {
-            String url = generateUrlWithParams(endpoint, params, values);
-            String response = getResponse(url, RequestMethod.GET);
-            logger.info("Instruments: " + response);
-            if(response.equals("")) {
-                return false;
-            } else {
-                JSONArray jsonArray = new JSONArray(response);
-                List<InstrumentDto> instruments = setUserInstrumentsList(jsonArray);
-
-                for (InstrumentDto instrument : instruments) {
-                    CalculationMap.setUserInstrumentPrice(mapper.mapToInstrumentCalculation(instrument));
-                }
-                CalculationMap.calculateShareRatios();
-                logger.info("User instruments have been loaded, quantity: " + CalculationMap.getData().size());
-                return true;
-            }
-        } catch (IOException ioe) {
-            logger.warn(ioe.getMessage());
-            return false;
+    public void loadUserInstruments() {
+        String response = instrumentController.getUserInstruments(User.getUserInstance().getId());
+        List<InstrumentDto> dtoList = setUserInstrumentsList(response);
+        for (InstrumentDto instrument : dtoList) {
+            CalculationMap.setUserInstrumentPrice(mapper.mapToInstrumentCalculation(instrument));
         }
+        CalculationMap.calculateShareRatios();
+        logger.info("User instruments have been loaded, quantity: " + CalculationMap.getData().size());
     }
 
-    private List<InstrumentDto> setUserInstrumentsList(JSONArray jsonArray) {
+    private List<InstrumentDto> setUserInstrumentsList(String response) {
+        JSONArray jsonArray = new JSONArray(response);
         List<InstrumentDto> instruments = new ArrayList<>();
         int objectsNumber = jsonArray.length();
         for(int i =0; i<objectsNumber; i++) {

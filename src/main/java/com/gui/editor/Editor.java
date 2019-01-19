@@ -26,8 +26,15 @@ public final class Editor {
         return builder.toString();
     }
 
-    private String setSpaces(String amount, boolean isItAmount) {
-        if (amount.contains(".") && amount.length() > 6) {
+    private String setSpaces(String amount, boolean isItDecimal) {
+
+        if (amount.contains(".")) {
+            String[] array = amount.split("\\.");
+            if (array[1].length() == 1)
+                amount = amount + "0";
+        }
+
+        if (amount.contains(".") && amount.length() > 6 && isItDecimal) {
             StringBuilder builder = new StringBuilder(replaceDot(amount));
             builder.reverse();
             builder.insert(6, " ");
@@ -38,7 +45,7 @@ public final class Editor {
             }
             builder.reverse();
             return builder.toString();
-        } else if (!amount.contains(".") && amount.length() > 3 && isItAmount) {
+        } else if (!amount.contains(".") && amount.length() > 3 && isItDecimal) {
             StringBuilder builder = new StringBuilder(amount);
             builder.reverse();
             if (builder.length() > 3) {
@@ -52,9 +59,9 @@ public final class Editor {
                 builder.append(",00");
             }
             return builder.toString();
-        } else if (!amount.contains(".") && amount.length() <= 3 && isItAmount) {
+        } else if (!amount.contains(".") && amount.length() <= 3 && isItDecimal) {
             return amount + ",00";
-        } else if (!amount.contains(".") && amount.length() > 3 && !isItAmount) {
+        } else if (!amount.contains(".") && amount.length() > 3 && !isItDecimal) {
             StringBuilder builder = new StringBuilder(amount);
             builder.reverse();
             if (builder.length() > 3) {

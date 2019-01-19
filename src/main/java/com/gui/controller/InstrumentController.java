@@ -17,6 +17,22 @@ public class InstrumentController implements RequestCreator {
     private Gson gson = new Gson();
     private Logger logger = Logger.getLogger(InstrumentController.class);
 
+    public String getUserInstruments(String userId) {
+        logger.info("Loading user instruments");
+        String[] params = {"userId"};
+        String[] values = {userId};
+        String url = generateUrlWithParams(ServiceConfig.INSTRUMENT_GET_ALL, params, values);
+        try {
+            String response = sendGetRequest(url);
+            logger.info("User instruments received");
+            return response;
+        } catch (IOException ioe) {
+            logger.warn(ioe.getMessage());
+            return "";
+        }
+    }
+
+
     public boolean addShare(InstrumentDto instrumentDto) {
         logger.info("Buying a new instrument...");
         String endpoint = ServiceConfig.INSTRUMENT_BUY;
@@ -53,7 +69,6 @@ public class InstrumentController implements RequestCreator {
         String[] params = {"userId", "name", "quantity", "price"};
         String[] values = {userId, shareName, quantity, price};
         String url = generateUrlWithParams(endpoint, params, values);
-        logger.info("Generated url: " + url);
         try {
             URL urlPath = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) urlPath.openConnection();
