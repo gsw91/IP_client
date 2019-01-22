@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="666.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gui.controllerFX.StatisticsSceneController">
+   <children>
+      <TableView fx:id="userStatistis" prefHeight="636.0" prefWidth="897.0">
+         <columns>
+            <TableColumn fx:id="name" prefWidth="93.0" text="Instrument" />
+            <TableColumn fx:id="buyingPrice" prefWidth="98.0" text="Buying price" />
+            <TableColumn fx:id="sellingPrice" prefWidth="107.0" text="Selling price" />
+            <TableColumn fx:id="quantity" prefWidth="94.0" text="Quantity" />
+            <TableColumn fx:id="result" prefWidth="96.0" text="Result" />
+            <TableColumn fx:id="returnRate" prefWidth="94.0" text="Return rate" />
+            <TableColumn fx:id="buyingDate" prefWidth="108.0" text="Buying date" />
+            <TableColumn fx:id="sellingDate" prefWidth="105.0" text="Selling date" />
+            <TableColumn fx:id="duration" prefWidth="91.0" text="Duration" />
+         </columns>
+      </TableView>
+      <Button fx:id="closeButton" layoutX="754.0" layoutY="638.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="25.0" prefWidth="143.0" text="Close" />
+   </children>
+</Pane>

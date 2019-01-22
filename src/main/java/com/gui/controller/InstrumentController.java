@@ -32,7 +32,6 @@ public class InstrumentController implements RequestCreator {
         }
     }
 
-
     public boolean addShare(InstrumentDto instrumentDto) {
         logger.info("Buying a new instrument...");
         String endpoint = ServiceConfig.INSTRUMENT_BUY;

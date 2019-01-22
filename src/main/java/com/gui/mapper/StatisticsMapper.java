@@ -2,11 +2,14 @@ package com.gui.mapper;
 
 import com.gui.domain.StatisticsRecord;
 import com.gui.dto.StatisticsDto;
+import com.gui.editor.Editor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StatisticsMapper {
+
+    private Editor editor = new Editor();
 
     public List<StatisticsRecord> mapToRecordList(List<StatisticsDto> dtoList) {
         List<StatisticsRecord> recordList = new ArrayList<>();
@@ -18,14 +21,14 @@ public class StatisticsMapper {
     private StatisticsRecord mapToRecord(StatisticsDto statisticsDto) {
         return new StatisticsRecord(
                 statisticsDto.getInstrumentName(),
-                String.valueOf(statisticsDto.getBuyingPrice()),
+                editor.setSpacesWithCurrency(String.valueOf(statisticsDto.getBuyingPrice())),
                 statisticsDto.getBuyingDate(),
-                String.valueOf(statisticsDto.getQuantity()),
-                String.valueOf(statisticsDto.getSellingPrice()),
+                editor.setSpacesToQuantity(String.valueOf(statisticsDto.getQuantity())),
+                editor.setSpacesWithCurrency(String.valueOf(statisticsDto.getSellingPrice())),
                 statisticsDto.getSellingDate(),
-                String.valueOf(statisticsDto.getResult()),
-                String.valueOf(statisticsDto.getReturnRate()),
-                String.valueOf(statisticsDto.getDuration()));
+                editor.setSpacesWithCurrency(String.valueOf(statisticsDto.getResult())),
+                editor.setRate(String.valueOf(statisticsDto.getReturnRate())),
+                editor.setSpacesToQuantity(String.valueOf(statisticsDto.getDuration())));
     }
 
 }

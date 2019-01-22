@@ -8,14 +8,24 @@ public final class Status {
     private static Logger LOGGER = Logger.getLogger(Status.class);
 
     private static boolean quotationsStageStatus = false;
+    private static boolean statisticsStageStatus = false;
 
     public static boolean isQuotationsStageStatus() {
         return quotationsStageStatus;
     }
 
+    public static boolean isStatisticsStageStatus() {
+        return statisticsStageStatus;
+    }
+
     public static void setQuotationsStageStatus(boolean quotationsStageStatus) {
         Status.quotationsStageStatus = quotationsStageStatus;
         LOGGER.info("Quotations status changed on: " + quotationsStageStatus);
+    }
+
+    public static void setStatisticsStageStatus(boolean statisticsStageStatus) {
+        Status.statisticsStageStatus = statisticsStageStatus;
+        LOGGER.info("Statistics status changed on: " + statisticsStageStatus);
     }
 
     public static boolean getServerStatus() {
