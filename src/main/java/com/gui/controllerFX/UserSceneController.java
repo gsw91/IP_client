@@ -360,7 +360,9 @@ public class UserSceneController implements Initializable {
         }
     }
 
-    public void showStats() {}
+    public void showStats() {
+
+    }
 
     public void refreshUserPanel() {
         CalculationMap.getData().clear();
