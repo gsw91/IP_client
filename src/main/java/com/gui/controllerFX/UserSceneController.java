@@ -15,6 +15,7 @@ import com.gui.editor.TableCellColor;
 import com.gui.editor.TableComparator;
 import com.gui.scene.FirstScene;
 import com.gui.scene.QuotationsScene;
+import com.gui.scene.StatisticsScene;
 import com.gui.service.InstrumentService;
 import com.gui.service.UserOperation;
 import com.gui.update.ThreadConfig;
@@ -360,8 +361,17 @@ public class UserSceneController implements Initializable {
         }
     }
 
-    public void showStats() {
-
+    public void showStatistics() {
+        try {
+            if(!Status.isStatisticsStageStatus()) {
+                StatisticsScene statisticsScene = StatisticsScene.getInstance();
+                statisticsScene.openStatisticsStage();
+            } else {
+                logger.info("The statistics stage has already been opened");
+            }
+        } catch (IOException ioe) {
+            logger.error("Can open statistics table, system error");
+        }
     }
 
     public void refreshUserPanel() {

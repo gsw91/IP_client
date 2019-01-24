@@ -39,4 +39,10 @@ public final class Status {
         });
     }
 
+    public static void exitOnCloseStatistics(Stage stage) {
+        stage.setOnCloseRequest(t -> {
+            Status.setStatisticsStageStatus(false);
+        });
+    }
+
 }
