@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RunWith(JUnit4.class)
-public class InstrumentMapperTestSuite {
+public class InstrumentMapperTest {
 
     private InstrumentMapper mapper;
 

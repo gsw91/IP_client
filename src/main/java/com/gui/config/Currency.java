@@ -2,6 +2,6 @@ package com.gui.config;
 
 public final class Currency {
 
-    public final static String CURRENCY = "z≈Ç";
+    public final static String CURRENCY = "z≥";
 
 }

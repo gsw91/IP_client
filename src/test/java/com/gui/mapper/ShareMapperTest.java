@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(JUnit4.class)
-public class ShareMapperTestSuite {
+public class ShareMapperTest {
 
     private ShareMapper mapper = new ShareMapper();
 

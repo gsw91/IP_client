@@ -23,7 +23,7 @@ import java.time.LocalDate;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserOperationTestSuite extends ApplicationTest {
+public class UserOperationTest extends ApplicationTest {
 
     @InjectMocks
     private UserOperation userOperation;

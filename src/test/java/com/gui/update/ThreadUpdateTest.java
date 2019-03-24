@@ -11,7 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.concurrent.TimeoutException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ThreadUpdateTestSuite {
+public class ThreadUpdateTest {
 
     @InjectMocks
     private UserSceneController userSceneController;

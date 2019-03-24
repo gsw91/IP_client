@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RunWith(JUnit4.class)
-public class QuotationsControllerTestSuite {
+public class QuotationsControllerTest {
 
     @Test
     public void testSetResponseToMap() {

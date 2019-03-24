@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StatisticsControllerTestSuite {
+public class StatisticsControllerTest {
 
     @Before
     public void setInstances() {
